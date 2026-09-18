@@ -763,94 +763,155 @@ setTimeout(()=>{ensureGasTierControl();updateFeeDisplay()},0);
 .top-wallet-trigger{display:inline-flex!important;align-items:center!important;gap:8px!important;min-height:36px!important;padding:6px 11px!important;background:var(--sheet)!important;border:1px solid var(--line)!important;border-radius:7px!important;box-shadow:0 2px 5px rgba(24,33,31,.05)!important;color:var(--ink)!important}
 .top-wallet-trigger:hover{border-color:var(--blue)!important;background:var(--blue2)!important}
 .top-wallet-trigger>strong{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
-</style><style id="vaultline-watch-only-final-fix">
-/* Watch-only presentation: keep the existing transaction engine, simplify wallet setup. */
-.setup-tabs [data-setup="create"],.setup-tabs [data-setup="hot"],.mode-btn[data-wallet-mode="managed"],.mode-btn[data-wallet-mode="signing"]{display:none!important}
-.gas-control{margin-top:22px!important;margin-bottom:0!important}
-.fee-grid{display:none!important;margin-top:12px!important}
-.fee-grid.fee-ready{display:grid!important}
 </style>
-<script id="vaultline-watch-only-final-fix-script">
+<style id="vaultline-watch-only-final">
+/* Watch-only product surface: keep Receive, Create, History and Balances only. */
+#sendTop,#signingView,.mode-btn[data-wallet-mode="managed"],.mode-btn[data-wallet-mode="signing"],
+.setup-tabs [data-setup="create"],.setup-tabs [data-setup="hot"],#unsignedPayload,#scanUnsigned,
+#signPayload,.offline-signing,.cold-signing{display:none!important}
+#sendView .fee-grid,#gasTierControl .fee-grid,.gas-control .fee-grid,.review-box .fee-grid{display:none!important}
+#gasTierControl{display:block!important}
+.watch-only-note{margin:12px 0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--sheet2);color:var(--muted);font-size:11px;line-height:1.55}
+</style>
+<script id="vaultline-watch-only-final-script">
 (function(){
-'use strict';
-const persist=()=>{try{if(typeof saveSafeSnapshot==='function')saveSafeSnapshot()}catch(e){console.warn('Wallet persistence failed',e)}};
-
-/* Keep only the watch-only creation flow; the public-address form remains unchanged. */
-window.renderCreateModal=function(){
-  state.walletSetupType='watch';
-  $('modalEyebrow').textContent='WATCH-ONLY WALLET';
-  $('modalTitle').textContent='إضافة محفظة للمشاهدة';
-  $('modalContent').innerHTML='<div class="notice">أضف عنواناً عاماً فقط. لن يتم حفظ مفتاح خاص أو عبارة استرداد، وتبقى تفاصيل المعاملات غير الموقعة كما هي.</div><div id="walletForm"></div>';
-  renderWalletForm();
-};
-
-/* Replace the navigation renderer with Balance + Create + History + Receive. */
-window.renderModeNav=function(){
-  const nav=$('modeNav'); if(!nav)return;
-  const items=[['dashboard','◉','Balance'],['send','↗','Create'],['history','◷','History'],['receive','↙','Receive']];
-  nav.innerHTML=items.map(item=>`<button class="nav-btn ${state.tab===item[0]?'active':''}" data-tab="${item[0]}" type="button"><span class="nav-btn-icon" aria-hidden="true">${item[1]}</span><span>${item[2]}</span>${item[0]==='history'?'<span class="nav-count" id="historyCount">'+state.history.length+'</span>':''}</button>`).join('');
-  nav.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>showView(button.dataset.tab));
-};
-
-/* Persist immediately after adding a watch wallet and after selection. */
-const originalSaveWallet=saveWallet;
-saveWallet=async function(){await originalSaveWallet();persist();};
-const originalSelectWallet=selectWallet;
-selectWallet=function(id){originalSelectWallet(id);persist();};
-
-/* Deletion is intentionally watch-only and is committed to localStorage immediately. */
-window.openWalletDelete=function(id){
-  const wallet=state.wallets.find(item=>item.id===id); if(!wallet)return;
-  closeWalletPicker(); openModalAfterRender();
-  $('modalEyebrow').textContent='WALLET MANAGEMENT'; $('modalTitle').textContent='حذف محفظة المشاهدة';
-  $('modalContent').innerHTML='<div class="notice">سيُحذف العنوان من قائمة المشاهدة نهائياً من هذا المتصفح.</div><button class="btn danger full" id="popupDeleteConfirm">حذف المحفظة نهائياً</button>';
-  $('popupDeleteConfirm').onclick=()=>{
-    state.wallets=state.wallets.filter(item=>item.id!==id);
-    state.active=state.wallets[0]?.id||null; state.mode='watch'; state.tab='dashboard';
-    persist(); closeModal(); updateWalletChrome(); setMode('watch'); persist(); toast('تم حذف محفظة المشاهدة نهائياً');
+  'use strict';
+  const $v=id=>document.getElementById(id);
+  function snapshot(){
+    try{
+      const payload={version:2,savedAt:Date.now(),wallets:(state.wallets||[]).map(w=>({id:w.id,name:w.name,address:w.address,mode:'watch',importType:'watch',created:w.created,balances:w.balances||{},verified:!!w.verified})),active:state.active||null,prices:state.prices||{},pricesAt:state.pricesAt||0};
+      localStorage.setItem('vaultline.safe.snapshot.v1',JSON.stringify(payload));
+    }catch(e){console.warn('Vaultline persistence failed',e)}
+  }
+  function renderWatchNav(){
+    const nav=$v('modeNav'); if(!nav)return;
+    const items=[['receive','↙','Receive'],['send','＋','Create'],['history','◷','History'],['balances','◈','Balances']];
+    nav.innerHTML=items.map(x=>`<button class="nav-btn ${state.tab===x[0]?'active':''}" data-tab="${x[0]}" type="button"><span class="nav-btn-icon" aria-hidden="true">${x[1]}</span><span>${x[2]}</span>${x[0]==='history'?'<span class="nav-count" id="historyCount">'+(state.history||[]).length+'</span>':''}</button>`).join('');
+    nav.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>window.showView(b.dataset.tab));
+    if(typeof applyTranslations==='function')setTimeout(applyTranslations,0);
+  }
+  const oldShowView=window.showView;
+  window.showView=function(tab){
+    if(tab==='dashboard')tab='balances';
+    if(tab==='signing')tab='receive';
+    state.tab=tab;
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    const el=$v(tab+'View')||$v('dashboardView'); if(el)el.classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
+    if(tab==='receive'&&typeof renderReceive==='function')renderReceive();
+    if(tab==='history'&&typeof renderHistory==='function')renderHistory();
+    if(tab==='send'&&typeof prepareSend==='function')prepareSend();
+    if(tab==='balances'){
+      if(typeof renderAssets==='function')renderAssets();
+      if(typeof renderNetworks==='function')renderNetworks();
+      if(typeof updateTotalBalance==='function')updateTotalBalance();
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
   };
-};
-
-const originalOpenWalletRename=openWalletRename;
-window.openWalletRename=function(id){
-  const wallet=state.wallets.find(item=>item.id===id); if(!wallet)return;
-  closeWalletPicker(); openModalAfterRender();
-  $('modalEyebrow').textContent='WALLET MANAGEMENT'; $('modalTitle').textContent='إعادة تسمية محفظة المشاهدة';
-  $('modalContent').innerHTML=`<label class="field">الاسم الجديد<input id="popupWalletName" value="${safeText(wallet.name)}"></label><button class="btn primary full" id="popupRenameSave">حفظ الاسم</button>`;
-  $('popupRenameSave').onclick=()=>{const name=$('popupWalletName').value.trim();if(!name){toast('أدخل اسماً للمحفظة');return}wallet.name=name;persist();closeModal();updateWalletChrome();toast('تم حفظ اسم المحفظة');};
-};
-
-/* Keep the fee calculation/building functions intact; only move the existing preview below gas tiers. */
-const originalEnsureGasTierControl=window.ensureGasTierControl;
-window.ensureGasTierControl=function(){
-  const grid=$('feeNative')?.closest('.fee-grid');
-  if(!grid)return;
-  originalEnsureGasTierControl();
-  const control=$('gasTierControl');
-  if(control){grid.parentNode.insertBefore(control,grid);}
-  grid.classList.remove('fee-ready');
-  control?.querySelectorAll('[data-gas-tier]').forEach(button=>{
-    button.onclick=async()=>{
-      state.gasTier=button.dataset.gasTier;
-      ensureGasTierControl();
-      grid.classList.add('fee-ready');
-      if(typeof estimateFeeForCurrent==='function')await estimateFeeForCurrent();
+  window.renderModeNav=renderWatchNav;
+  const oldSetMode=window.setMode;
+  window.setMode=function(){state.mode='watch';renderWatchNav();window.showView(state.tab&&['receive','send','history','balances'].includes(state.tab)?state.tab:'balances');if($v('modeLabel'))$v('modeLabel').textContent='WATCH-ONLY WALLET';if($v('sendTop'))$v('sendTop').style.display='none';};
+  const oldRenderCreateModal=window.renderCreateModal;
+  window.renderCreateModal=function(){
+    state.walletSetupType='watch';
+    $v('modalEyebrow').textContent='WALLET SETUP';
+    $v('modalTitle').textContent='Add watch-only wallet';
+    $v('modalContent').innerHTML='<div class="watch-only-note">أضف عنواناً عاماً للمشاهدة فقط. لا يتم حفظ مفتاح خاص أو عبارة استرداد أو بيانات توقيع.</div><div id="walletForm"></div>';
+    if(typeof renderWalletForm==='function')renderWalletForm();
+    document.querySelectorAll('[data-setup]').forEach(b=>b.style.display='none');
+    setTimeout(()=>{document.querySelectorAll('[data-setup="watch"]').forEach(b=>b.style.display='none')},0);
+  };
+  const oldOpenModal=window.openModal;
+  window.openModal=function(kind){if(kind==='sign')return;return oldOpenModal.apply(this,arguments)};
+  function forceWatchWallets(){
+    if(!window.state)return;
+    state.wallets=(state.wallets||[]).map(w=>({...w,mode:'watch',importType:'watch',password:'',phrase:'',passphrase:'',privateKey:''}));
+    if(state.active&&!state.wallets.some(w=>w.id===state.active))state.active=state.wallets[0]?.id||null;
+    state.mode=state.active?'watch':'managed';
+  }
+  const oldUpdate=window.updateWalletChrome;
+  window.updateWalletChrome=function(){forceWatchWallets();if(oldUpdate)oldUpdate();if($v('modeLabel'))$v('modeLabel').textContent='WATCH-ONLY WALLET';renderWatchNav();if($v('sendTop'))$v('sendTop').style.display='none';snapshot();};
+  function patchManager(){
+    const old=window.unlockWalletManager;
+    window.unlockWalletManager=function(){
+      if(old)old.apply(this,arguments);
+      const btn=$v('deleteWallet');
+      if(btn)btn.onclick=function(){
+        const w=state.wallets.find(x=>x.id===state.active); if(!w)return;
+        if(confirm('Delete this wallet permanently from this browser?')){
+          state.wallets=state.wallets.filter(x=>x.id!==w.id);state.active=state.wallets[0]?.id||null;state.mode=state.active?'watch':'managed';state.tab='balances';snapshot();
+          if(typeof closeModal==='function')closeModal();if(typeof updateWalletChrome==='function')updateWalletChrome();window.showView('balances');if(typeof toast==='function')toast('Wallet deleted permanently');
+        }
+      };
     };
-  });
-};
-
-/* The current selected tier is the only trigger for displaying/calculating the fee. */
-const originalPrepareSend=window.prepareSend;
-window.prepareSend=function(){originalPrepareSend();const grid=$('feeNative')?.closest('.fee-grid');if(grid&&!state.feeEstimate)grid.classList.remove('fee-ready');};
-
-/* Make all entry points say watch-only and save the active wallet before leaving. */
-$('addWalletTop')?.addEventListener('click',()=>{state.walletSetupType='watch';});
-$('walletPopupAdd')?.addEventListener('click',()=>{state.walletSetupType='watch';});
-if($('addWalletTop'))$('addWalletTop').textContent='＋ Add watch wallet';
-if($('walletPopupAdd'))$('walletPopupAdd').innerHTML='＋ <span>Add watch wallet</span>';
-state.mode='watch';
-renderModeNav();
-updateWalletChrome();
+  }
+  const originalBroadcastRawTransaction=window.broadcastRawTransaction;
+  async function preflightSignedTransaction(raw,n){
+    const rawTx=signedRawFromInput(raw); if(!rawTx) throw Error('ألصق معاملة موقعة أولاً.');
+    const tx=ethers.Transaction.from(rawTx);
+    const network=n||NETWORKS.find(x=>Number(x.chainId)===Number(tx.chainId));
+    if(!network) throw Error('الشبكة الموجودة في المعاملة غير مدعومة.');
+    const provider=new ethers.JsonRpcProvider(rpcFor(network));
+    const sender=tx.from; if(!sender||!ethers.isAddress(sender)) throw Error('لا يمكن تحديد عنوان المرسل من التوقيع.');
+    const gasLimit=BigInt(tx.gasLimit||0n);
+    const feePerGas=BigInt(tx.maxFeePerGas??tx.gasPrice??0n);
+    const feeRaw=gasLimit*feePerGas;
+    const nativeBalance=await provider.getBalance(sender);
+    const tokenEntry=Object.entries(network.tokens||{}).find(([name,t])=>t?.address&&tx.to?.toLowerCase()===t.address.toLowerCase());
+    if(tokenEntry){
+      let amountRaw=0n;
+      try{const decoded=new ethers.Interface(['function transfer(address to,uint256 amount)']).decodeFunctionData('transfer',tx.data||'0x');amountRaw=BigInt(decoded.amount)}catch(e){throw Error('تعذر قراءة قيمة تحويل التوكن من المعاملة الموقعة.')}
+      const token=tokenEntry[1];
+      const tokenBalance=await new ethers.Contract(token.address,ERC20_ABI,provider).balanceOf(sender);
+      if(amountRaw>tokenBalance)throw Error('الرصيد غير كافٍ من '+tokenEntry[0]+' لتغطية مبلغ التحويل.');
+      if(feeRaw>nativeBalance)throw Error('الرصيد غير كافٍ من '+network.native+' لتغطية رسوم الغاز. المطلوب حتى '+ethers.formatEther(feeRaw)+' '+network.native+' والمتاح '+ethers.formatEther(nativeBalance)+' '+network.native+'.');
+    }else if(BigInt(tx.value||0n)+feeRaw>nativeBalance){
+      const required=BigInt(tx.value||0n)+feeRaw;
+      throw Error('الرصيد غير كافٍ لتغطية المبلغ ورسوم الغاز. المطلوب حتى '+ethers.formatEther(required)+' '+network.native+' والمتاح '+ethers.formatEther(nativeBalance)+' '+network.native+'.');
+    }
+    return {tx,network,feeRaw,nativeBalance};
+  }
+  window.broadcastRawTransaction=async function(raw,n){
+    await preflightSignedTransaction(raw,n);
+    return originalBroadcastRawTransaction(raw,n);
+  };
+  try{broadcastRawTransaction=window.broadcastRawTransaction}catch(e){}
+  function bindSignedBroadcastButton(){
+    const button=$v('broadcastSigned'); if(!button||button.dataset.directBroadcastBound==='1')return;
+    button.dataset.directBroadcastBound='1';
+    button.onclick=async function(){
+      try{
+        let raw=signedRawFromInput($v('signedPayload')?.value);
+        if(!raw)throw Error('ألصق المعاملة الموقعة بصيغة 0x... أو JSON يحتوي signedRaw.');
+        if(!raw.startsWith('0x')&&/^[0-9a-fA-F]+$/.test(raw))raw='0x'+raw;
+        const tx=ethers.Transaction.from(raw);
+        const network=NETWORKS.find(x=>Number(x.chainId)===Number(tx.chainId));
+        if(!network)throw Error('الشبكة الموجودة في المعاملة غير مدعومة.');
+        const preview=await preflightSignedTransaction(raw,network);
+        const fee=ethers.formatEther(preview.feeRaw);
+        $v('modalBackdrop').style.display='grid';
+        $v('modalEyebrow').textContent='BROADCAST REVIEW';
+        $v('modalTitle').textContent='Review signed transaction';
+        $v('modalContent').innerHTML='<div class="notice">المعاملة موقعة خارجياً. راجع التفاصيل قبل البث.</div><div class="review-box broadcast-details"><div class="review-row"><span>الشبكة</span><strong>'+network.name+'</strong></div><div class="review-row"><span>المرسل</span><strong>'+tx.from+'</strong></div><div class="review-row"><span>المستلم</span><strong>'+ (tx.to||'—')+'</strong></div><div class="review-row"><span>رسوم الغاز القصوى</span><strong>'+fee+' '+network.native+'</strong></div></div><button class="btn primary full" id="broadcastNow">Broadcast now</button>';
+        $v('broadcastNow').onclick=async()=>{const b=$v('broadcastNow');b.disabled=true;b.textContent='Broadcasting…';try{await window.broadcastRawTransaction(raw,network)}catch(e){b.disabled=false;b.textContent='Broadcast now';toast(e.message||'Broadcast failed')}};
+      }catch(e){toast(e.message||'تعذر تجهيز المعاملة للبث')}
+    };
+  }
+  function init(){
+    forceWatchWallets();
+    patchManager();
+    bindSignedBroadcastButton();
+    const observer=new MutationObserver(()=>{const btn=$v('deleteWallet');if(btn&&!btn.dataset.watchBound){btn.dataset.watchBound='1';btn.onclick=function(){const w=state.wallets.find(x=>x.id===state.active);if(!w)return;if(confirm('Delete this wallet permanently from this browser?')){state.wallets=state.wallets.filter(x=>x.id!==w.id);state.active=state.wallets[0]?.id||null;state.mode=state.active?'watch':'managed';state.tab='balances';snapshot();if(typeof closeModal==='function')closeModal();if(typeof updateWalletChrome==='function')updateWalletChrome();window.showView('balances');if(typeof toast==='function')toast('Wallet deleted permanently')}}}});observer.observe($v('modalContent'),{childList:true,subtree:true});
+    renderWatchNav();
+    document.querySelectorAll('.mode-btn[data-wallet-mode="managed"],.mode-btn[data-wallet-mode="signing"]').forEach(x=>x.remove());
+    if($v('sendTop'))$v('sendTop').remove();
+    if($v('sendView'))$v('sendView').classList.remove('active');
+    if($v('signingView'))$v('signingView').classList.remove('active');
+    snapshot();
+    setTimeout(()=>{if(state.active)window.showView(state.tab&&['receive','send','history','balances'].includes(state.tab)?state.tab:'balances');else window.showView('balances');},50);
+  }
+  window.addEventListener('load',()=>setTimeout(init,0));
+  setTimeout(init,120);
 })();
 </script>
 </body></html>

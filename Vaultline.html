@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@master/qrcode.min.js"></script>
 <style>
 :root{
   --topbar-h:60px;
@@ -58,7 +58,6 @@ a{color:inherit}
 .app{min-height:100vh;display:flex;flex-direction:column}
 .main{flex:1;display:flex;flex-direction:column;min-width:0}
 
-/* ---------------- TOPBAR (3-column grid: brand | wallet name | spacer) ---------------- */
 .topbar{
   position:sticky;top:0;z-index:50;
   height:var(--topbar-h);
@@ -86,10 +85,10 @@ a{color:inherit}
   justify-self:center;
   display:inline-flex;align-items:center;gap:9px;
   max-width:min(60vw,320px);
-  padding:9px 16px;
+  padding:10px 18px;
   border:1px solid var(--line);border-radius:var(--r-full);
   background:var(--sheet);color:var(--ink);
-  font-size:12.5px;font-weight:600;line-height:1;
+  font-size:14px;font-weight:600;line-height:1;
   box-shadow:var(--shadow-xs);
   transition:border-color .2s var(--ease),color .2s var(--ease),background .2s var(--ease),transform .2s var(--ease),box-shadow .2s var(--ease);
 }
@@ -97,13 +96,12 @@ a{color:inherit}
 .wallet-name-btn:active{transform:translateY(0)}
 .wallet-name-btn #crumbName{
   display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  min-width:0;max-width:220px;
+  min-width:0;max-width:220px;font-size:14px;
 }
-.wallet-name-btn .caret{color:var(--quiet);font-size:10px;flex-shrink:0}
+.wallet-name-btn .caret{color:var(--quiet);font-size:11px;flex-shrink:0}
 .wallet-name-btn:hover .caret{color:var(--blue)}
 .top-actions-spacer{justify-self:end}
 
-/* ---------------- TABS ---------------- */
 .visible-tabs{
   position:sticky;top:var(--topbar-h);z-index:45;
   display:flex;align-items:center;gap:4px;
@@ -127,52 +125,32 @@ a{color:inherit}
 .nav-count{background:var(--blue2);color:var(--blue);font-size:10px;font-weight:700;line-height:1;padding:4px 7px;border-radius:var(--r-full);min-width:20px;text-align:center}
 .nav-btn.active .nav-count{background:rgba(255,255,255,.25);color:#fff}
 
-/* ---------------- LAYOUT ---------------- */
-.wrap{width:100%;max-width:1240px;margin:0 auto;padding:30px 20px 72px}
-.heading{position:relative;padding-left:18px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.heading:before{content:'';position:absolute;left:0;top:5px;bottom:5px;width:4px;border-radius:var(--r-full);background:var(--grad);box-shadow:0 6px 18px -6px rgba(76,107,255,.9)}
-.eyebrow{display:block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--quiet)}
+.wrap{width:100%;max-width:1240px;margin:0 auto;padding:26px 20px 72px}
 h1,h2,h3{font-family:'Fraunces',Georgia,'Times New Roman',serif;font-weight:600;letter-spacing:-.022em}
 h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
-.heading p{color:var(--muted);font-size:13px;max-width:640px;line-height:1.65}
-.rule{height:1px;background:linear-gradient(90deg,var(--line-strong),var(--line) 55%,transparent);margin:24px 0}
 .view{display:none}
 .view.active{display:block;animation:fadeUp .38s var(--ease) both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-/* ---------------- DASHBOARD ---------------- */
-.dashboard-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,.9fr);gap:16px}
-.balance-card{position:relative;overflow:hidden;padding:28px 30px;min-height:214px;border:1px solid #2c3c6b;border-radius:var(--r-lg);background:var(--grad-soft);box-shadow:var(--shadow);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+.dashboard-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.balance-card{position:relative;overflow:hidden;padding:32px 30px;min-height:170px;display:flex;align-items:center;border:1px solid #2c3c6b;border-radius:var(--r-lg);background:var(--grad-soft);box-shadow:var(--shadow);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
 .balance-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
 .balance-card:after{content:'';position:absolute;inset:0;z-index:0;background:linear-gradient(115deg,rgba(255,255,255,.09) 0%,transparent 60%);pointer-events:none}
 .balance-art{position:absolute;right:-15px;bottom:-10px;z-index:1;width:55%;height:108%;object-fit:cover;mix-blend-mode:screen;opacity:.28;pointer-events:none}
-.balance-content{position:relative;z-index:2}
-.live{color:var(--sage);font-size:9px;letter-spacing:.1em;margin-left:6px;animation:pulse 2.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.balance-number{font:700 46px/1 'Fraunces',Georgia,serif;letter-spacing:-.045em;margin:28px 0 14px;font-variant-numeric:tabular-nums}
-.balance-number small{font-size:24px;font-weight:600;color:#a9b8d8;letter-spacing:-.02em}
-.change{display:flex;align-items:center;gap:8px;font-size:12px;flex-wrap:wrap}
-.change strong{color:var(--sage);font-weight:700}
-.change b{font-size:9.5px;letter-spacing:.08em;font-weight:700;color:var(--sage);background:rgba(255,255,255,.07);border:1px solid rgba(61,219,165,.25);padding:4px 9px;border-radius:var(--r-full)}
-.change span{color:#94a3c0;font-size:10.5px}
-.security-card{position:relative;overflow:hidden;padding:24px;min-height:214px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
-.security-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
-.security-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.security-mark{display:grid;place-items:center;width:40px;height:40px;border-radius:13px;color:#08180f;font-weight:700;font-size:16px;background:linear-gradient(135deg,#3ddba5,#6cf0bf);box-shadow:0 12px 26px -12px rgba(61,219,165,.95)}
-.status{font-size:9px;letter-spacing:.1em;font-weight:700;color:var(--sage);background:var(--sage2);padding:5px 10px;border-radius:var(--r-full)}
-.security-card h3{font-size:21px;line-height:1.25;max-width:250px;margin:18px 0 8px}
-.security-card p{color:var(--muted);font-size:12px;line-height:1.65;max-width:280px}
-.security-art{position:absolute;right:-15px;bottom:-16px;width:130px;mix-blend-mode:screen;opacity:.22;pointer-events:none}
+.balance-content{position:relative;z-index:2;width:100%}
+.balance-number{font:700 52px/1 'Fraunces',Georgia,serif;letter-spacing:-.045em;margin:0;font-variant-numeric:tabular-nums}
+.balance-number small{font-size:26px;font-weight:600;color:#a9b8d8;letter-spacing:-.02em}
+
 .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-top:32px;flex-wrap:wrap}
 .section-head h2{font-size:22px;margin-top:6px}
+.eyebrow{display:block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--quiet)}
 
-/* ---------------- ASSET LIST ---------------- */
 .assets-grid{display:flex;flex-direction:column;margin:16px 0 28px;background:var(--sheet);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
 .asset-card{display:flex;align-items:center;gap:14px;width:100%;padding:15px 20px;min-height:64px;border-bottom:1px solid var(--line);background:transparent;text-align:left;transition:background .2s var(--ease)}
 .asset-card:last-child{border-bottom:0}
 .asset-card:hover{background:var(--sheet2)}
 .asset-card:hover .asset-value{color:var(--blue)}
-.asset-mark{display:inline-grid;place-items:center;width:36px;height:36px;min-width:36px;flex-shrink:0;border-radius:50%;overflow:hidden;background:var(--sheet2);border:1px solid var(--line)}
+.asset-mark{display:inline-grid;place-items:center;width:36px;height:36px;min-width:36px;flex-shrink:0;border-radius:50%;overflow:hidden;background:var(--sheet2);border:1px solid var(--line);font-size:13px;font-weight:700;color:var(--muted)}
 .asset-mark img{display:block;width:22px;height:22px;max-width:22px;max-height:22px;object-fit:contain}
 .asset-info{flex:1;min-width:0}
 .asset-info h3{font-family:inherit;font-size:14px;font-weight:600;letter-spacing:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -182,7 +160,6 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .positive{color:var(--sage)}
 .negative{color:var(--copper)}
 
-/* ---------------- PANELS / FORMS ---------------- */
 .send-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
 .receive-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:16px;align-items:start}
 .panel{background:var(--sheet);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:var(--shadow);min-width:0}
@@ -207,7 +184,6 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .fee-grid strong{display:block;font-size:12px;margin-top:6px;word-break:break-word;font-variant-numeric:tabular-nums}
 .form-note{text-align:center;color:var(--quiet);font-size:10.5px;margin-top:14px;line-height:1.6}
 
-/* ---------------- BUTTONS ---------------- */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:12px 20px;border:1px solid transparent;border-radius:var(--r-sm);font-size:12.5px;font-weight:700;letter-spacing:.01em;white-space:nowrap;transition:transform .22s var(--ease),box-shadow .25s var(--ease),background .22s var(--ease),border-color .22s var(--ease),color .22s var(--ease),filter .22s var(--ease)}
 .btn.primary{background:var(--grad);color:#fff;box-shadow:0 12px 26px -14px rgba(76,107,255,.95)}
 .btn.primary:hover{transform:translateY(-2px);box-shadow:0 18px 34px -14px rgba(76,107,255,.95);filter:brightness(1.06)}
@@ -219,8 +195,9 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .btn.full{width:100%}
 .link{border:0;background:none;color:var(--blue);font-size:11px;font-weight:700;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;transition:opacity .2s var(--ease)}
 .link:hover{opacity:.7}
+.link.inline-btn{display:inline-flex;align-items:center;gap:6px}
+.last-updated{font-size:10px;color:var(--quiet);margin-left:8px;font-weight:500}
 
-/* ---------------- RECEIVE ---------------- */
 .receive-layout .panel{padding:28px}
 .receive-layout h2{font-size:28px;margin:8px 0 0}
 .address-box{display:flex;align-items:center;gap:10px;min-height:50px;margin-top:20px;padding:6px 6px 6px 14px;background:var(--sheet2);border:1px solid var(--line);border-radius:var(--r-sm);min-width:0}
@@ -236,12 +213,10 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .camera-zone{display:flex;gap:10px;margin-top:16px}
 .camera-zone button{flex:1}
 
-/* ---------------- NOTICES ---------------- */
 .notice{padding:14px 16px;margin-top:16px;border-radius:var(--r-sm);background:#2c2415;border:1px solid #4a3c1c;color:#f2d79a;font-size:11.5px;line-height:1.65}
 .notice.success-notice{background:#12352a;border-color:#1f5c45;color:#8ff0c8;font-weight:700}
 .notice.error-notice{background:#3a1c18;border-color:#6b2c22;color:#ffb3a3;font-weight:700}
 
-/* ---------------- HISTORY ---------------- */
 .history-panel{overflow:hidden}
 .history-table{margin-top:18px}
 .history-head{display:grid;grid-template-columns:2fr 1fr 1.2fr 1fr 1fr;gap:12px;padding:12px 14px;border-radius:var(--r-sm);background:var(--sheet2);color:var(--quiet);font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
@@ -264,16 +239,17 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .activity-link{color:var(--blue);font-weight:700;text-decoration:none}
 .activity-link:hover{text-decoration:underline}
 .history-hash{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.hash-copy-btn{padding:4px 8px;border-radius:6px;background:var(--blue2);color:var(--blue);font-size:9.5px;font-weight:700;margin-left:6px;transition:background .15s var(--ease),color .15s var(--ease)}
+.hash-copy-btn:hover{background:var(--blue);color:#0a0e16}
 @media (min-width:761px){
-  .history-head{grid-template-columns:2fr 1.1fr 1fr 1.1fr;padding:12px 6px 12px 52px}
+  .history-head{grid-template-columns:2fr 1.1fr 1fr 1.1fr;padding:12px 6px 12px 54px}
   .history-head span:nth-child(2){display:none}
-  .activity-row.history-rich-row{display:grid;grid-template-columns:34px 2fr 1.1fr 1fr 1.1fr;gap:12px;align-items:center;padding:15px 6px}
+  .activity-row.history-rich-row{display:grid;grid-template-columns:36px 2fr 1.1fr 1fr 1.1fr;gap:12px;align-items:center;padding:15px 6px}
   .activity-row.history-rich-row:hover{background:var(--sheet2)}
   .history-rich-row .history-status{justify-self:start;font-size:10px;font-weight:700;text-transform:capitalize;color:var(--muted);background:var(--sheet2);border:1px solid var(--line);padding:4px 10px;border-radius:var(--r-full)}
   .history-rich-row .history-date{text-align:right;font-size:10.5px;color:var(--quiet);min-width:0}
 }
 
-/* ---------------- MODALS ---------------- */
 .modal-backdrop{display:none;position:fixed;inset:0;z-index:90;place-items:center;padding:16px;background:rgba(3,6,12,.7);backdrop-filter:blur(8px) saturate(140%);-webkit-backdrop-filter:blur(8px) saturate(140%)}
 .modal-backdrop.open{display:grid;animation:fadeIn .22s var(--ease)}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -296,7 +272,6 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .export-qr{display:grid;place-items:center;width:max-content;max-width:100%;padding:16px;margin:18px auto;background:#fff;border:1px solid var(--line);border-radius:var(--r)}
 .export-qr img,.export-qr canvas{display:block;max-width:100%;height:auto}
 
-/* ---------------- CHOICE ---------------- */
 .choice-control{position:relative;margin-top:8px}
 .choice-native{position:absolute!important;opacity:0!important;pointer-events:none!important;width:1px!important;height:1px!important}
 .choice-trigger{display:flex;align-items:center;gap:10px;width:100%;min-height:46px;padding:8px 14px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--sheet2);text-align:left;color:var(--ink);font-size:13px;transition:border-color .2s var(--ease),background .2s var(--ease),box-shadow .2s var(--ease)}
@@ -317,7 +292,6 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .choice-option strong{font-size:12px;font-weight:600}
 .choice-option small{font-size:10px;color:var(--muted);margin-top:2px}
 
-/* ---------------- WALLET LIST ---------------- */
 .wallet-menu-row{display:flex;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line);position:relative}
 .wallet-menu-row:first-child{border-top:0}
 .wallet-menu-row .wallet-menu-info{flex:1;min-width:0;text-align:left}
@@ -335,7 +309,6 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .hash-link{color:var(--blue);text-decoration:underline;word-break:break-all}
 .hash-value{max-width:70%;text-align:right;word-break:break-all}
 
-/* ---------------- FEEDBACK ---------------- */
 .toast{display:none;position:fixed;z-index:120;right:20px;bottom:20px;left:20px;max-width:420px;margin-left:auto;padding:16px 18px;border-radius:var(--r);background:#1b2436;color:#fff;font-size:12px;font-weight:600;line-height:1.6;box-shadow:var(--shadow-lg);animation:toastIn .32s var(--ease) both}
 @keyframes toastIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .toast.toast-success{background:linear-gradient(135deg,#0a7a55,#13ab7a)}
@@ -349,7 +322,6 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 .history-spinner{width:38px;height:38px;border-radius:50%;border:3px solid var(--blue2);border-top-color:var(--blue);animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ---------------- RESPONSIVE ---------------- */
 @media (max-width:900px){
   .dashboard-grid{grid-template-columns:minmax(0,1fr)}
   .receive-layout{grid-template-columns:minmax(0,1fr)}
@@ -359,24 +331,17 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
   .topbar{height:var(--topbar-h);padding:0 12px;gap:8px}
   .brand{font-size:13px}
   .brand:before{width:8px;height:8px}
-  .wallet-name-btn{padding:7px 12px;font-size:11.5px;max-width:52vw}
-  .wallet-name-btn #crumbName{max-width:36vw}
-  .wallet-name-btn .caret{font-size:9px}
+  .wallet-name-btn{padding:8px 14px;font-size:13px;max-width:56vw}
+  .wallet-name-btn #crumbName{max-width:40vw;font-size:13px}
+  .wallet-name-btn .caret{font-size:10px}
   .visible-tabs{padding:6px 12px;gap:2px}
   .visible-tabs .nav-btn{padding:8px 13px;font-size:11.5px}
-  .wrap{padding:20px 14px 56px}
-  .heading{padding-left:14px}
-  .heading:before{width:3px;top:3px;bottom:3px}
+  .wrap{padding:18px 14px 56px}
   h1{font-size:27px}
-  .heading p{font-size:12px}
-  .rule{margin:18px 0}
-  .balance-card{padding:20px;min-height:auto}
-  .balance-number{font-size:34px;margin:20px 0 12px}
-  .balance-number small{font-size:19px}
+  .balance-card{padding:24px 20px;min-height:auto}
+  .balance-number{font-size:38px}
+  .balance-number small{font-size:20px}
   .balance-art{width:64%;opacity:.22}
-  .security-card{padding:20px;min-height:auto}
-  .security-card h3{font-size:18px}
-  .security-card p{max-width:100%}
   .section-head{margin-top:22px}
   .section-head h2{font-size:18px}
   .assets-grid{margin:12px 0 20px}
@@ -416,7 +381,8 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
   .subtabs{width:100%;max-width:100%;overflow-x:auto;flex-wrap:nowrap}
   .subtabs button{padding:9px 14px;font-size:11px;flex:1;white-space:nowrap}
   .activity-row{display:flex;flex-wrap:wrap;gap:8px;padding:12px 4px;align-items:center}
-  .history-rich-row .activity-icon{width:28px;height:28px;font-size:12px}
+  .history-rich-row .asset-mark{width:32px;height:32px;min-width:32px}
+  .history-rich-row .asset-mark img{width:20px;height:20px;max-width:20px;max-height:20px}
   .history-rich-row .activity-copy{flex:1 1 60%;min-width:0}
   .history-rich-row .activity-copy strong{font-size:12px}
   .history-rich-row .activity-copy small{font-size:10px}
@@ -435,15 +401,49 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 @media (max-width:400px){
   h1{font-size:24px}
   .wrap{padding:16px 12px 48px}
-  .heading{padding-left:12px}
+  .balance-number{font-size:32px}
   .asset-value{min-width:64px;font-size:12px}
   .asset-amount{font-size:10px}
-  .wallet-name-btn{padding:6px 10px;font-size:11px;max-width:46vw}
-  .wallet-name-btn #crumbName{max-width:32vw}
+  .wallet-name-btn{padding:7px 12px;font-size:12.5px;max-width:50vw}
+  .wallet-name-btn #crumbName{max-width:36vw;font-size:12.5px}
   #receiveQr canvas,#receiveQr img{max-width:148px!important;max-height:148px!important}
 }
 @media (prefers-reduced-motion:reduce){
   *,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --paper:#f4f6fb;
+    --sheet:#ffffff;
+    --sheet2:#eef2fa;
+    --ink:#0c1424;
+    --muted:#5b6784;
+    --quiet:#8792ab;
+    --line:#dde3ef;
+    --line-strong:#c5cee0;
+    --blue:#3d5aff;
+    --blue2:#e6ecff;
+    --blue-deep:#2f48e0;
+    --sage:#0e9a6c;
+    --sage2:#d8f5e8;
+    --copper:#db5238;
+    --copper2:#fbe3dc;
+    --glass:rgba(255,255,255,.82);
+    --grad-soft:linear-gradient(135deg,#e3e9ff 0%,#ece4ff 50%,#f6e5ff 100%);
+    --shadow-xs:0 1px 2px rgba(15,23,42,.05);
+    --shadow:0 1px 2px rgba(15,23,42,.05),0 18px 44px -24px rgba(15,23,42,.18);
+    --shadow-lg:0 28px 80px -24px rgba(15,23,42,.2);
+    --ring:0 0 0 3px rgba(61,90,255,.18);
+  }
+  body{background-image:radial-gradient(1100px 520px at 12% -8%,rgba(59,91,253,.1),transparent 60%),radial-gradient(900px 480px at 100% 2%,rgba(122,77,255,.08),transparent 55%)}
+  .balance-card{border-color:#c5d0ee;color:var(--ink)}
+  .balance-number small{color:#5b6784}
+  .balance-art{mix-blend-mode:multiply;opacity:.14}
+  .notice{background:#fdf3d3;border-color:#ecd28d;color:#7a5a12}
+  .notice.success-notice{background:#d6f7e8;border-color:#87d8b5;color:#0b5d3f}
+  .notice.error-notice{background:#fbe0d8;border-color:#f0a593;color:#8c2c15}
+  .avatar{color:#fff}
+  ::-webkit-scrollbar-thumb{background:#c5cee0}
 }
 </style>
 </head>
@@ -452,27 +452,71 @@ h1{font-size:36px;line-height:1.08;margin:7px 0 8px}
 <main class="main">
 <header class="topbar">
   <div class="brand">Vaultline</div>
-  <button class="wallet-name-btn" id="walletNameBtn" title="Open wallet list">
+  <button class="wallet-name-btn" id="walletNameBtn" title="Open wallet list" aria-label="Open wallet list">
     <span id="crumbName">Wallet setup</span>
-    <span class="caret">▾</span>
+    <span class="caret" aria-hidden="true">▾</span>
   </button>
   <div class="top-actions-spacer"></div>
 </header>
 <nav class="visible-tabs" id="modeNav" aria-label="Main navigation"></nav>
 <div class="wrap">
-<section class="heading"><div><span class="eyebrow" id="modeLabel">SELF-CUSTODY WALLET</span><h1 id="pageTitle">Welcome</h1><p id="pageSubtitle">Move value with a paper trail. Every action stays clear and reviewable.</p></div></section><div class="rule"></div>
 <section class="view active" id="dashboardView">
-  <div class="dashboard-grid"><div class="balance-card"><div class="balance-content"><span class="eyebrow">TOTAL BALANCE <span class="live">● LIVE PRICES</span></span><div class="balance-number" id="totalBalance">$0<small>.00</small></div><div class="change"><strong id="balanceChange">—</strong><b id="balancePercent">SYNC PENDING</b><span>Live network data updates after a wallet is loaded.</span></div></div><img class="balance-art" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle cx='100' cy='100' r='80' fill='%234c6bff' opacity='.35'/><circle cx='140' cy='60' r='50' fill='%239b6bff' opacity='.28'/></svg>" alt=""></div><div class="security-card" id="securityCard"><div class="security-top"><div class="security-mark">✓</div><span class="status" id="securityStatus">NO WALLET</span></div><h3 id="securityTitle">Create a wallet to begin.</h3><p id="securityText">Use a managed or watch-only wallet. Sensitive actions remain password-gated.</p><button class="link" id="securityAction">Open wallet setup ↗</button></div></div>
-  <div class="section-head"><div><span class="eyebrow">PORTFOLIO</span><h2>Your assets</h2></div><button class="link" id="refreshBalances">Refresh balances ↻</button></div><div class="assets-grid" id="assetGrid"></div>
-  </section>
+  <div class="dashboard-grid">
+    <div class="balance-card">
+      <div class="balance-content">
+        <div class="balance-number" id="totalBalance">$0<small>.00</small></div>
+      </div>
+      <img class="balance-art" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><circle cx='100' cy='100' r='80' fill='%234c6bff' opacity='.35'/><circle cx='140' cy='60' r='50' fill='%239b6bff' opacity='.28'/></svg>" alt="">
+    </div>
+  </div>
+  <div class="section-head"><div><span class="eyebrow">PORTFOLIO</span><h2>Your assets</h2></div><button class="link inline-btn" id="refreshBalances">Refresh balances ↻<span class="last-updated" id="balancesUpdated"></span></button></div><div class="assets-grid" id="assetGrid"></div>
+</section>
 <section class="view" id="sendView"><div class="send-layout"><div class="panel form-panel"><span class="secure-badge" id="sendModeBadge">WATCH-ONLY</span><span class="eyebrow" id="sendEyebrow">BUILD UNSIGNED TRANSACTION</span><h2 id="sendTitle">Prepare a transaction</h2><p class="sub" id="sendSubtitle">Build, export, sign offline, then broadcast.</p><label class="field">Network<select id="sendNetwork"></select></label><label class="field">Asset<select id="sendAsset"></select></label><label class="field">Amount<div class="amount-box"><input id="sendAmount" inputmode="decimal" placeholder="0.00"><select id="amountUnit"><option value="asset">Asset</option><option value="usd">USDT equivalent</option></select></div><div class="amount-hint"><span id="availableAmount">Available —</span><span id="amountConversion">≈ $0.00</span></div><button type="button" class="full-balance" id="useFullBalance">Use full balance</button></label><label class="field">Recipient address<textarea id="recipient" placeholder="Paste a 0x address, or use the camera scan button below"></textarea></label><div class="camera-zone"><button class="btn secondary" id="scanRecipient">▣ Scan recipient QR</button></div><div class="fee-grid"><div><span>Estimated fee</span><strong id="feeUsd">$—</strong></div><div><span>Gas / units</span><strong id="feeNative">—</strong></div><div><span>Priority</span><strong class="positive">Standard</strong></div></div><button class="btn primary full" id="reviewSend">↗ Review transaction</button><p class="form-note">✓ Nothing is signed or broadcast until you confirm the final review.</p></div></div></section>
-<section class="view" id="receiveView"><div class="receive-layout"><div class="panel"><span class="eyebrow">RECEIVE ASSETS</span><h2>Your public address</h2><p class="sub">Share this address to receive supported assets on the selected networks. Never share private keys or recovery phrases.</p><div class="address-box"><span id="receiveAddress">Load or create a wallet</span><button id="copyAddress">Copy address</button></div><div class="notice">ⓘ A public address is safe to share. Recovery phrases, private keys, signed payloads, and passwords are not.</div></div><div class="panel qr-panel"><div class="qr-code" id="receiveQr"></div><strong>Scan to receive</strong><small id="qrCaption">Public address QR</small></div></div></section>
-<section class="view" id="historyView"><div class="panel history-panel"><div class="section-head"><div><span class="eyebrow">TRANSACTION LEDGER</span><h2>History</h2><p class="sub">Activity is loaded from the configured explorer source for each network.</p></div><button class="btn secondary" id="refreshHistory">↻ Refresh history</button><a class="btn secondary" id="openBscScan" target="_blank" rel="noreferrer" href="#">↗ Open BscScan</a></div><div class="subtabs"><button class="active" data-history-filter="all">All</button><button data-history-filter="in">Incoming</button><button data-history-filter="out">Outgoing</button></div><div class="history-table"><div class="history-head"><span>Transaction</span><span>Network</span><span>Amount</span><span>Status</span><span>Date</span></div><div id="historyRows"></div></div></div></section>
+<section class="view" id="receiveView"><div class="receive-layout"><div class="panel"><span class="eyebrow">RECEIVE ASSETS</span><h2>Your public address</h2><p class="sub">Share this address to receive supported assets on the selected networks. Never share private keys or recovery phrases.</p><div class="address-box"><span id="receiveAddress">Load or create a wallet</span><button id="copyAddress">Copy address</button></div><div class="notice">ⓘ A public address is safe to share. Recovery phrases, private keys, signed payloads, and passwords are not.</div></div><div class="panel qr-panel"><div class="qr-code" id="receiveQr"></div><strong>Scan to receive</strong><small id="qrCaption">Public address QR</small><div class="camera-zone" style="width:100%"><button class="btn secondary" id="downloadQr" type="button">⤓ Download QR</button></div></div></div></section>
+<section class="view" id="historyView"><div class="panel history-panel"><div class="section-head"><div><span class="eyebrow">TRANSACTION LEDGER</span><h2>History</h2><p class="sub">Activity is loaded from the configured explorer source for each network.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn secondary" id="refreshHistory">↻ Refresh history</button><a class="btn secondary hidden" id="openBscScan" target="_blank" rel="noreferrer" href="#">↗ Open BscScan</a></div></div><div class="subtabs"><button class="active" data-history-filter="all">All</button><button data-history-filter="in">Incoming</button><button data-history-filter="out">Outgoing</button></div><div class="history-table"><div class="history-head"><span>Transaction</span><span>Network</span><span>Amount</span><span>Status</span><span>Date</span></div><div id="historyRows"></div></div></div></section>
 <section class="view" id="watchView"><div class="panel"><span class="eyebrow">UNSIGNED TRANSACTION WORKSPACE</span><h2>Build, sign, then broadcast</h2><p class="sub">Create the unsigned transaction here, copy it into a separate signing wallet, then return and paste or scan the signed transaction below.</p><div id="watchUnsignedResult" class="unsigned-result hidden"><div class="notice">Unsigned transaction ready. Copy this text, then sign it in your separate Signing wallet file.</div><label class="field">Unsigned transaction<textarea id="watchUnsignedPayload" class="payload" readonly></textarea></label><div class="camera-zone"><button class="btn primary" id="copyWatchUnsigned">Copy unsigned transaction</button></div></div><label class="field">Signed transaction<textarea id="signedPayload" class="payload" placeholder="Paste the complete signed raw transaction"></textarea></label><button class="btn primary full" id="broadcastSigned" style="margin-top:12px">↗ Broadcast signed transaction</button><div class="notice">Verify chain, recipient, amount, nonce, and fee before broadcasting.</div></div></section>
 </div></main></div>
-<div class="modal-backdrop" id="modalBackdrop"><div class="modal"><div class="modal-head"><div><span class="eyebrow" id="modalEyebrow">WALLET SETUP</span><h2 id="modalTitle">Create a new wallet</h2></div><button class="close" id="closeModal">×</button></div><div id="modalContent"></div></div></div><input type="file" id="qrFile" accept="image/*" class="hidden"><div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalEyebrow">
+    <div class="modal-head"><div><span class="eyebrow" id="modalEyebrow">WALLET SETUP</span><h2 id="modalTitle">Create a new wallet</h2></div><button class="close" id="closeModal" aria-label="Close dialog">×</button></div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+<input type="file" id="qrFile" accept="image/*" class="hidden">
+<div class="toast" id="toast" aria-live="polite" aria-atomic="true"></div>
 <script>
-const NETWORKS=[
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid = () => (crypto?.randomUUID ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2)));
+const fmt = (n, d = 2) => Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtUsd = n => {
+  const v = Number(n);
+  if (!Number.isFinite(v)) return '—';
+  if (v === 0) return '$0.00';
+  if (Math.abs(v) >= 1) return '$' + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const places = Math.min(10, Math.max(4, Math.ceil(-Math.log10(Math.abs(v))) + 2));
+  return '$' + v.toFixed(places);
+};
+const short = a => a ? a.slice(0, 6) + '…' + a.slice(-4) : '—';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+async function mapLimit(items, limit, fn) {
+  const results = new Array(items.length);
+  let i = 0;
+  const workers = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (i < items.length) { const idx = i++; results[idx] = await fn(items[idx], idx); }
+  });
+  await Promise.all(workers);
+  return results;
+}
+
+/* ============================================================
+   NETWORKS + TOKEN METADATA
+   ============================================================ */
+const NETWORKS = [
  {id:'ethereum',name:'Ethereum Mainnet',short:'Ethereum',chainId:1,native:'ETH',rpc:'https://mainnet.infura.io/v3/',explorer:'https://api.etherscan.io/v2/api',nativePrice:'ethereum',tokens:{}},
  {id:'arbitrum',name:'Arbitrum One',short:'Arbitrum',chainId:42161,native:'ETH',rpc:'https://arbitrum-mainnet.infura.io/v3/',explorer:'https://api.etherscan.io/v2/api',nativePrice:'ethereum',tokens:{}},
  {id:'avalanche',name:'Avalanche (C-Chain)',short:'Avalanche',chainId:43114,native:'AVAX',rpc:'https://avalanche-mainnet.infura.io/v3/',explorer:'https://api.etherscan.io/v2/api',nativePrice:'avalanche-2',tokens:{}},
@@ -487,7 +531,7 @@ const NETWORKS=[
  {id:'polygon',name:'Polygon PoS',short:'Polygon',chainId:137,native:'POL',rpc:'https://polygon-mainnet.infura.io/v3/',explorer:'https://api.etherscan.io/v2/api',nativePrice:'matic-network',tokens:{}},
  {id:'scroll',name:'Scroll',short:'Scroll',chainId:534352,native:'ETH',rpc:'https://scroll-mainnet.infura.io/v3/',explorer:'https://api.etherscan.io/v2/api',nativePrice:'ethereum',tokens:{}}
 ];
-const VERIFIED_TOKEN_CONTRACTS={
+const VERIFIED_TOKEN_CONTRACTS = {
  ethereum:{USDC:{address:'0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',decimals:6},USDT:{address:'0xdAC17F958D2ee523a2206206994597C13D831ec7',decimals:6},BNB:{address:'0xb8c77482e45f1f44de1745f52c74426c631bdd52',decimals:18},SOL:{address:'0xD31a59c85aE9D8edEFeC411D448f90841571b89c',decimals:9},WBTC:{address:'0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',decimals:8},LINK:{address:'0x514910771AF9Ca656af840dff83E8264EcF986CA',decimals:18},USDE:{address:'0x4c9EDD5852cd905f086C759E8383e09bff1E68B3',decimals:18}},
  arbitrum:{USDC:{address:'0xaf88d065e77c8cC2239327C5EDb3A432268e5831',decimals:6},USDT:{address:'0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',decimals:6}},
  avalanche:{USDC:{address:'0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',decimals:6},USDT:{address:'0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7',decimals:6}},
@@ -497,222 +541,566 @@ const VERIFIED_TOKEN_CONTRACTS={
  optimism:{USDC:{address:'0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',decimals:6}},
  polygon:{USDC:{address:'0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',decimals:6},USDT:{address:'0xc2132D05D31c914a87C6611C10748AEb04B58e8F',decimals:6}}
 };
-VERIFIED_TOKEN_CONTRACTS.bsc={USDT:{address:'0x55d398326f99059fF775485246999027B3197955',decimals:18},USDC:{address:'0x8ac76a51cc950d9822D68b83fE1Ad97B32Cd580d',decimals:18},ETH:{address:'0x2170Ed0880ac9A755fd29B2688956BD959F933F8',decimals:18},ADA:{address:'0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47',decimals:18},BCH:{address:'0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf',decimals:18},DOGE:{address:'0xbA2aE424d960c26247Dd6c32edC70B295c744C43',decimals:8},LINK:{address:'0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD',decimals:18},LTC:{address:'0x4338665CBB7B2485A8855A139b75D5e34AB0DB94',decimals:18},SOL:{address:'0x570A5D26f7765Ecb712C0924E4De545B89fD43dF',decimals:18},TRX:{address:'0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B',decimals:18},WBTC:{address:'0x0555E30da8f98308EdB960aa94C0Db47230d2B9c',decimals:8},XRP:{address:'0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE',decimals:18},ZEC:{address:'0x1Ba42e5193dfA8B03D15dd1B86a3113bbBEF8Eeb',decimals:18}};
-VERIFIED_TOKEN_CONTRACTS.opbnb={USDT:{address:'0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3',decimals:18},USDC:{address:'0x55d398326f99059fF775485246999027B3197955',decimals:18}};
-for(const n of NETWORKS){const verified=VERIFIED_TOKEN_CONTRACTS[n.id]||{};n.tokens=Object.fromEntries(Object.entries(verified).filter(([_,t])=>t&&ethers.isAddress(t.address)&&Number.isInteger(t.decimals)&&t.decimals>=0&&t.decimals<=36))}
-const EMBEDDED_API={infuraProjectId:'ac8a181a27f34d91b765776e3eb68512',etherscanApiKey:'F7B26KHK3HZM3IGDU3Z1ATF3AA9H299MVR'};
-const CURRENCY_META={ETH:{label:'Ether',color:'#627eea',slug:'ethereum'},AVAX:{label:'Avalanche',color:'#e84142',slug:'avalanche'},BNB:{label:'BNB',color:'#f3ba2f',slug:'binance'},CELO:{label:'Celo',color:'#35d07f',slug:'celo'},USDT:{label:'Tether USD',color:'#26a17b',slug:'tether'},USDC:{label:'USD Coin',color:'#2775ca',slug:'usd-coin'},BTC:{label:'Bitcoin',color:'#f7931a',slug:'bitcoin'},XRP:{label:'XRP',color:'#23292f',slug:'xrp'},SOL:{label:'Solana',color:'#9945ff',slug:'solana'},TRX:{label:'TRON',color:'#ef0027',slug:'tron'},HYPE:{label:'Hyperliquid',color:'#6c5ce7',slug:'hyperliquid'},DOGE:{label:'Dogecoin',color:'#c2a633',slug:'dogecoin'},ZEC:{label:'Zcash',color:'#f4b728',slug:'zcash'},WBTC:{label:'Wrapped Bitcoin',color:'#f09242',slug:'wrapped-bitcoin'},LINK:{label:'Chainlink Token',color:'#375bd2',slug:'chainlink'},ADA:{label:'Cardano',color:'#0033ad',slug:'cardano'},XLM:{label:'Stellar',color:'#111111',slug:'stellar'},BCH:{label:'Bitcoin Cash',color:'#8dc351',slug:'bitcoin-cash'},USDE:{label:'Ethena USDe',color:'#1c1c1c',slug:'ethena-usde'},TON:{label:'Toncoin',color:'#0098ea',slug:'the-open-network'},LTC:{label:'Litecoin',color:'#345d9d',slug:'litecoin'},HBAR:{label:'HBAR',color:'#222222',slug:'hedera-hashgraph'},POL:{label:'Polygon',color:'#8247E5',slug:'polygon'},PALM:{label:'Palm',color:'#00D395',slug:'palm'}};
-function currencyMeta(symbol){return CURRENCY_META[symbol]||{label:symbol,color:'#6574ca'}}
-function currencyAvatar(symbol,network){const m=currencyMeta(symbol);const direct={ETH:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png',AVAX:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchec/info/logo.png',BNB:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/info/logo.png',CELO:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/celo/info/logo.png',POL:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/info/logo.png',PALM:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/palm/info/logo.png',USDT:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdac17f958d2ee523a2206206994597c13d831ec7/logo.png',USDC:'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png'};const fallback=symbol==='USDC'?'https://cdn.simpleicons.org/usdcoin/2775CA':`https://cdn.simpleicons.org/${m.slug||'circle'}/${m.color.replace('#','')}`;const src=direct[symbol]||fallback;return `<span class="asset-mark" title="${m.label} on ${network}"><img src="${src}" data-fallback="${fallback}" alt="${m.label}" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none';this.nextElementSibling.style.display='inline'}"><span style="display:none">${symbol.slice(0,1)}</span></span>`}
-function rpcFor(n){let rpc=n.rpc;if(rpc.includes('infura.io'))return rpc+EMBEDDED_API.infuraProjectId;return rpc}
-async function providerBalance(provider,address){return provider.getBalance(address)}
-const state={wallets:[],active:null,mode:'watch',tab:'dashboard',prices:{},balances:{},history:[],historyDiagnostics:[],historyLoading:false,settings:{etherscanKey:EMBEDDED_API.etherscanApiKey,infuraKey:EMBEDDED_API.infuraProjectId},feeEstimate:null};
-const ERC20_ABI=['function balanceOf(address owner) view returns (uint256)','function decimals() view returns (uint8)'];
-function isEvmNetwork(n){return typeof n.chainId==='number' && !!n.rpc && !!n.tokens}
-async function readTokenBalance(provider,address,token){if(!token||!token.address||token.address.length<10)return 0;try{const c=new ethers.Contract(token.address,ERC20_ABI,provider);const raw=await c.balanceOf(address);return Number(ethers.formatUnits(raw,token.decimals))}catch(e){return 0}}
-const $=id=>document.getElementById(id);const fmt=(n,d=2)=>Number(n||0).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});const fmtUsd=n=>{const v=Number(n);if(!Number.isFinite(v))return '—';if(v===0)return '$0.00';if(Math.abs(v)>=1)return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});const places=Math.min(10,Math.max(4,Math.ceil(-Math.log10(Math.abs(v)))+2));return '$'+v.toFixed(places)};const short=a=>a?a.slice(0,6)+'…'+a.slice(-4):'—';
-function toast(message,type){const t=$('toast');if(!t)return;const text=String(message||'');let kind=type;if(!kind){if(/success|confirmed|copied|created|sent|pasted|ready/i.test(text))kind='success';else if(/failed|failure|incorrect|invalid|unavailable|denied|cannot|error|not found|no wallet|no active|unsupported|insufficient/i.test(text))kind='error';else if(/required|waiting|pending|select|choose|enter|paste|scan|unverified|review/i.test(text))kind='warning';else kind='info'}t.className='toast toast-'+kind;t.setAttribute('role',kind==='error'?'alert':'status');t.textContent=text;t.style.display='block';clearTimeout(window.__vaultlineToastTimer);window.__vaultlineToastTimer=setTimeout(()=>{t.style.display='none'},5500)}
-function renderModeNav(mode){const nav=$('modeNav');if(!nav)return;const items=[['dashboard','▦','Balances'],['history','◷','History'],['send','↗','Send'],['receive','↙','Receive']];nav.innerHTML=items.map(x=>`<button type="button" class="nav-btn ${state.tab===x[0]?'active':''}" data-tab="${x[0]}">${x[1]} <span>${x[2]}</span>${x[0]==='history'?'<span class="nav-count" id="historyCount">'+state.history.length+'</span>':''}</button>`).join('');nav.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showView(b.dataset.tab))}
-function showView(tab){state.tab=tab;document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));const el=$(tab+'View');if(el)el.classList.add('active');document.querySelectorAll('#modeNav [data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));if(tab==='receive')renderReceive();if(tab==='history')renderHistory();if(tab==='send')prepareSend();window.scrollTo({top:0,behavior:'smooth'})}
-function setMode(mode){state.mode='watch';renderModeNav('watch');$('modeLabel').textContent='WATCH-ONLY WALLET';const w=state.wallets.find(x=>x.id===state.active);$('pageTitle').textContent=w?.name?'Welcome, '+w.name+'.':'Welcome';$('pageSubtitle').textContent='Move value with a paper trail. Every action stays clear and reviewable.';showView('dashboard');toast('Wallet mode enabled')}
-function openModal(kind){$('modalBackdrop').classList.add('open');if(kind==='wallets')renderWalletListModal();else if(kind==='review')renderReviewModal();else renderWatchWalletModal()}
-function closeModal(){$('modalBackdrop').classList.remove('open')}
+VERIFIED_TOKEN_CONTRACTS.bsc = {USDT:{address:'0x55d398326f99059fF775485246999027B3197955',decimals:18},USDC:{address:'0x8ac76a51cc950d9822D68b83fE1Ad97B32Cd580d',decimals:18},ETH:{address:'0x2170Ed0880ac9A755fd29B2688956BD959F933F8',decimals:18},ADA:{address:'0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47',decimals:18},BCH:{address:'0x8fF795a6F4D97E7887C79beA79aba5cc76444aDf',decimals:18},DOGE:{address:'0xbA2aE424d960c26247Dd6c32edC70B295c744C43',decimals:8},LINK:{address:'0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD',decimals:18},LTC:{address:'0x4338665CBB7B2485A8855A139b75D5e34AB0DB94',decimals:18},SOL:{address:'0x570A5D26f7765Ecb712C0924E4De545B89fD43dF',decimals:18},TRX:{address:'0x85EAC5Ac2F758618dFa09bDbe0cf174e7d574D5B',decimals:18},WBTC:{address:'0x0555E30da8f98308EdB960aa94C0Db47230d2B9c',decimals:8},XRP:{address:'0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE',decimals:18},ZEC:{address:'0x1Ba42e5193dfA8B03D15dd1B86a3113bbBEF8Eeb',decimals:18}};
+VERIFIED_TOKEN_CONTRACTS.opbnb = {USDT:{address:'0x9e5aac1ba1a2e6aed6b32689dfcf62a509ca96f3',decimals:18},USDC:{address:'0x55d398326f99059fF775485246999027B3197955',decimals:18}};
+for (const n of NETWORKS) {
+  const verified = VERIFIED_TOKEN_CONTRACTS[n.id] || {};
+  n.tokens = Object.fromEntries(Object.entries(verified).filter(([_, t]) => t && ethers.isAddress(t.address) && Number.isInteger(t.decimals) && t.decimals >= 0 && t.decimals <= 36));
+}
+const EMBEDDED_API = { infuraProjectId: 'ac8a181a27f34d91b765776e3eb68512', etherscanApiKey: 'F7B26KHK3HZM3IGDU3Z1ATF3AA9H299MVR' };
+const CURRENCY_META = {ETH:{label:'Ether',color:'#627eea',slug:'ethereum'},AVAX:{label:'Avalanche',color:'#e84142',slug:'avalanche'},BNB:{label:'BNB',color:'#f3ba2f',slug:'binance'},CELO:{label:'Celo',color:'#35d07f',slug:'celo'},USDT:{label:'Tether USD',color:'#26a17b',slug:'tether'},USDC:{label:'USD Coin',color:'#2775ca',slug:'usd-coin'},BTC:{label:'Bitcoin',color:'#f7931a',slug:'bitcoin'},XRP:{label:'XRP',color:'#23292f',slug:'xrp'},SOL:{label:'Solana',color:'#9945ff',slug:'solana'},TRX:{label:'TRON',color:'#ef0027',slug:'tron'},HYPE:{label:'Hyperliquid',color:'#6c5ce7',slug:'hyperliquid'},DOGE:{label:'Dogecoin',color:'#c2a633',slug:'dogecoin'},ZEC:{label:'Zcash',color:'#f4b728',slug:'zcash'},WBTC:{label:'Wrapped Bitcoin',color:'#f09242',slug:'wrapped-bitcoin'},LINK:{label:'Chainlink Token',color:'#375bd2',slug:'chainlink'},ADA:{label:'Cardano',color:'#0033ad',slug:'cardano'},XLM:{label:'Stellar',color:'#111111',slug:'stellar'},BCH:{label:'Bitcoin Cash',color:'#8dc351',slug:'bitcoin-cash'},USDE:{label:'Ethena USDe',color:'#1c1c1c',slug:'ethena-usde'},TON:{label:'Toncoin',color:'#0098ea',slug:'the-open-network'},LTC:{label:'Litecoin',color:'#345d9d',slug:'litecoin'},HBAR:{label:'HBAR',color:'#222222',slug:'hedera-hashgraph'},POL:{label:'Polygon',color:'#8247E5',slug:'polygon'},PALM:{label:'Palm',color:'#00D395',slug:'palm'}};
+function currencyMeta(symbol) { return CURRENCY_META[symbol] || { label: symbol, color: '#6574ca', slug: 'circle' }; }
+const TRUSTWALLET_CDN = 'https://cdn.jsdelivr.net/gh/trustwallet/assets@master/';
+function currencyAvatar(symbol, network) {
+  const m = currencyMeta(symbol);
+  const direct = {
+    ETH: TRUSTWALLET_CDN + 'blockchains/ethereum/info/logo.png',
+    AVAX: TRUSTWALLET_CDN + 'blockchains/avalanchec/info/logo.png',
+    BNB: TRUSTWALLET_CDN + 'blockchains/smartchain/info/logo.png',
+    CELO: TRUSTWALLET_CDN + 'blockchains/celo/info/logo.png',
+    POL: TRUSTWALLET_CDN + 'blockchains/polygon/info/logo.png',
+    PALM: TRUSTWALLET_CDN + 'blockchains/palm/info/logo.png',
+    USDT: TRUSTWALLET_CDN + 'blockchains/ethereum/assets/0xdac17f958d2ee523a2206206994597c13d831ec7/logo.png',
+    USDC: 'https://assets.coingecko.com/coins/images/6319/large/USD_Coin_icon.png'
+  };
+  const fallback = symbol === 'USDC' ? 'https://cdn.simpleicons.org/usdcoin/2775CA' : `https://cdn.simpleicons.org/${m.slug || 'circle'}/${m.color.replace('#', '')}`;
+  const src = direct[symbol] || fallback;
+  return `<span class="asset-mark" title="${esc(m.label)} on ${esc(network)}"><img loading="lazy" decoding="async" src="${esc(src)}" data-fallback="${esc(fallback)}" alt="${esc(m.label)}" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none';this.nextElementSibling.style.display='inline'}"><span style="display:none">${esc(symbol.slice(0, 1))}</span></span>`;
+}
+function rpcFor(n) { let rpc = n.rpc; if (rpc.includes('infura.io')) return rpc + EMBEDDED_API.infuraProjectId; return rpc; }
+async function providerBalance(provider, address) { return provider.getBalance(address); }
+const providerCache = new Map();
+function providerFor(n) {
+  if (!providerCache.has(n.id)) providerCache.set(n.id, new ethers.JsonRpcProvider(rpcFor(n)));
+  return providerCache.get(n.id);
+}
+const ERC20_ABI = ['function balanceOf(address owner) view returns (uint256)', 'function decimals() view returns (uint8)'];
+function isEvmNetwork(n) { return typeof n.chainId === 'number' && !!n.rpc && !!n.tokens; }
+async function readTokenBalance(provider, address, token) {
+  if (!token || !token.address || token.address.length < 10) return 0;
+  try {
+    const c = new ethers.Contract(token.address, ERC20_ABI, provider);
+    const raw = await c.balanceOf(address);
+    return Number(ethers.formatUnits(raw, token.decimals));
+  } catch (e) { console.warn('Token read failed', token?.address, e?.message); return 0; }
+}
 
 /* ============================================================
-   WATCH-ONLY WALLET — the ONLY way to add a wallet
+   STATE
    ============================================================ */
-function renderWatchWalletModal(){
-  state.walletSetupType='watch';
-  $('modalEyebrow').textContent='WATCH WALLET';
-  $('modalTitle').textContent='Add a watch wallet';
-  $('modalContent').innerHTML=`
-    <div class="notice">Only a public address is stored. No private key or recovery phrase is requested. You can build unsigned transactions and export them for signing.</div>
-    <label class="field">Wallet name<input id="walletName" placeholder="e.g. Main Ledger"></label>
-    <label class="field">Public address<input id="watchAddress" placeholder="0x… public address only"></label>
-    <button class="btn primary full" id="saveWatchWallet" style="margin-top:16px">Add watch-only wallet</button>
-    <div id="formError" class="error"></div>
-  `;
-  $('saveWatchWallet').onclick=saveWatchWallet;
+const state = {
+  wallets: [],
+  active: null,
+  mode: 'watch',
+  tab: 'dashboard',
+  prices: {},
+  balances: {},
+  history: [],
+  historyDiagnostics: [],
+  historyLoading: false,
+  historyFilter: 'all',
+  settings: { etherscanKey: EMBEDDED_API.etherscanApiKey, infuraKey: EMBEDDED_API.infuraProjectId },
+  feeEstimate: null,
+  balancesUpdatedAt: 0,
+  pricesUpdatedAt: 0
+};
+
+/* ============================================================
+   TOAST + NAV
+   ============================================================ */
+function toast(message, type) {
+  const t = $('toast'); if (!t) return;
+  const text = String(message || ''); let kind = type;
+  if (!kind) {
+    if (/success|confirmed|copied|created|sent|pasted|ready/i.test(text)) kind = 'success';
+    else if (/failed|failure|incorrect|invalid|unavailable|denied|cannot|error|not found|no wallet|no active|unsupported|insufficient|not enough/i.test(text)) kind = 'error';
+    else if (/required|waiting|pending|select|choose|enter|paste|scan|unverified|review/i.test(text)) kind = 'warning';
+    else kind = 'info';
+  }
+  t.className = 'toast toast-' + kind;
+  t.setAttribute('role', kind === 'error' ? 'alert' : 'status');
+  t.textContent = text;
+  t.style.display = 'block';
+  clearTimeout(window.__vaultlineToastTimer);
+  window.__vaultlineToastTimer = setTimeout(() => { t.style.display = 'none'; }, 5500);
 }
-function saveWatchWallet(){
-  const err=$('formError');
-  const name=($('walletName')?.value||'').trim()||'Watch wallet';
-  const address=($('watchAddress')?.value||'').trim();
-  if(!address||!ethers.isAddress(address)){err.textContent='Enter a valid EVM public address.';return}
-  const item={
-    id:crypto.randomUUID(),
-    name,
-    address,
-    mode:'watch',
-    password:'',
-    phrase:'',
-    passphrase:'',
-    privateKey:'',
-    created:new Date().toISOString(),
-    balances:{}
+function renderModeNav() {
+  const nav = $('modeNav'); if (!nav) return;
+  const items = [['dashboard', '▦', 'Balances'], ['history', '◷', 'History'], ['send', '↗', 'Send'], ['receive', '↙', 'Receive']];
+  nav.innerHTML = items.map(x => `<button type="button" class="nav-btn ${state.tab === x[0] ? 'active' : ''}" data-tab="${x[0]}">${x[1]} <span>${x[2]}</span>${x[0] === 'history' ? '<span class="nav-count" id="historyCount">' + state.history.length + '</span>' : ''}</button>`).join('');
+  nav.querySelectorAll('[data-tab]').forEach(b => b.onclick = () => showView(b.dataset.tab));
+}
+function showView(tab) {
+  state.tab = tab;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = $(tab + 'View'); if (el) el.classList.add('active');
+  document.querySelectorAll('#modeNav [data-tab]').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  if (tab === 'receive') renderReceive();
+  if (tab === 'history') renderHistory();
+  if (tab === 'send') prepareSend();
+  if (tab !== 'history') window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function setMode() { state.mode = 'watch'; renderModeNav(); updateWalletChrome(); showView('dashboard'); }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+let lastFocused = null;
+function openModal(kind) {
+  const backdrop = $('modalBackdrop');
+  const modal = backdrop.querySelector('.modal');
+  lastFocused = document.activeElement;
+  if (kind === 'wallets') renderWalletListModal();
+  else if (kind === 'review') renderReviewModal();
+  else if (kind === 'broadcast') { /* content injected by caller */ }
+  else renderWatchWalletModal();
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => { const first = modal.querySelector('input,textarea,button'); if (first) first.focus(); }, 50);
+}
+function closeModal() {
+  const backdrop = $('modalBackdrop');
+  backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+  if (lastFocused && typeof lastFocused.focus === 'function') { try { lastFocused.focus(); } catch (e) {} }
+}
+document.addEventListener('keydown', e => {
+  const backdrop = $('modalBackdrop');
+  if (!backdrop.classList.contains('open')) return;
+  if (e.key === 'Escape') { closeModal(); return; }
+  if (e.key === 'Tab') {
+    const focusable = backdrop.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
+
+/* ============================================================
+   WALLET MANAGEMENT (watch-only only)
+   ============================================================ */
+function renderWatchWalletModal() {
+  state.walletSetupType = 'watch';
+  $('modalEyebrow').textContent = 'WATCH WALLET';
+  $('modalTitle').textContent = 'Add a watch wallet';
+  $('modalContent').innerHTML = `
+    <div class="notice">Only a public address is stored. No private key or recovery phrase is requested. You can build unsigned transactions and export them for signing.</div>
+    <label class="field">Wallet name<input id="walletName" placeholder="e.g. Main Ledger" autocomplete="off"></label>
+    <label class="field">Public address<input id="watchAddress" placeholder="0x… public address only" autocomplete="off" spellcheck="false"></label>
+    <button class="btn primary full" id="saveWatchWallet" style="margin-top:16px">Add watch-only wallet</button>
+    <div id="formError" class="error" role="alert"></div>
+  `;
+  $('saveWatchWallet').onclick = saveWatchWallet;
+}
+function saveWatchWallet() {
+  const err = $('formError');
+  const name = ($('walletName')?.value || '').trim() || 'Watch wallet';
+  const address = ($('watchAddress')?.value || '').trim();
+  if (!address || !ethers.isAddress(address)) { err.textContent = 'Enter a valid EVM public address.'; return; }
+  const item = {
+    id: uid(), name, address, mode: 'watch',
+    password: '', phrase: '', passphrase: '', privateKey: '',
+    created: new Date().toISOString(), balances: {}
   };
   state.wallets.push(item);
-  state.active=item.id;
-  state.mode='watch';
-  state.tab='dashboard';
+  state.active = item.id;
+  state.mode = 'watch';
+  state.tab = 'dashboard';
   closeModal();
   updateWalletChrome();
-  setMode('watch');
+  setMode();
   toast('Watch-only wallet added');
   syncWallet();
 }
-
-function updateWalletChrome(){renderModeNav('watch');const w=state.wallets.find(x=>x.id===state.active);const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};const show=(id,value)=>{const el=$(id);if(el)el.style.display=value?'':'none'};show('securityCard',!w);set('crumbName',w?.name||'Wallet setup');set('pageTitle',w?.name?'Welcome, '+w.name+'.':'Welcome');set('receiveAddress',w?.address||'Load or create a wallet');set('securityStatus',w?'PROTECTED':'NO WALLET');set('securityTitle',w?'Your vault is in good order.':'Add a watch wallet to begin.');set('securityText',w?'Address: '+short(w.address)+'. Watch-only mode — build unsigned transactions and export them for signing.':'Only a public address is stored. Add a watch wallet to track balances and build unsigned transactions.');renderAssets();renderReceive();saveSafeSnapshot()}
-function renameWalletById(id){const w=state.wallets.find(x=>x.id===id);if(!w)return;const name=prompt('New wallet name',w.name);if(name&&name.trim()){w.name=name.trim();updateWalletChrome();renderWalletListModal();toast('Wallet name updated')}}
-function deleteWalletById(id){const w=state.wallets.find(x=>x.id===id);if(!w)return;if(!confirm('Delete this wallet?'))return;state.wallets=state.wallets.filter(x=>x.id!==id);if(state.active===id)state.active=state.wallets[0]?.id||null;updateWalletChrome();renderWalletListModal();toast('Wallet deleted')}
-
-/* ============================================================
-   WALLET LIST MODAL — includes "Add watch wallet" button
-   ============================================================ */
-function renderWalletListModal(){
-  $('modalEyebrow').textContent='WALLET LIST';
-  $('modalTitle').textContent='Your wallets';
-  const list=state.wallets.length
-    ? state.wallets.map(w=>`
+function updateWalletChrome() {
+  renderModeNav();
+  const w = state.wallets.find(x => x.id === state.active);
+  const crumbName = $('crumbName');
+  if (crumbName) crumbName.textContent = w?.name || 'Wallet setup';
+  const receiveAddress = $('receiveAddress');
+  if (receiveAddress) receiveAddress.textContent = w?.address || 'Load or create a wallet';
+  renderAssets();
+  renderReceive();
+  saveSafeSnapshotDebounced();
+}
+function renameWalletById(id) {
+  const w = state.wallets.find(x => x.id === id); if (!w) return;
+  const name = prompt('New wallet name', w.name);
+  if (name && name.trim()) { w.name = name.trim(); updateWalletChrome(); renderWalletListModal(); toast('Wallet name updated'); }
+}
+function deleteWalletById(id) {
+  const w = state.wallets.find(x => x.id === id); if (!w) return;
+  if (!confirm('Delete this wallet?')) return;
+  state.wallets = state.wallets.filter(x => x.id !== id);
+  if (state.active === id) state.active = state.wallets[0]?.id || null;
+  updateWalletChrome();
+  renderWalletListModal();
+  toast('Wallet deleted');
+}
+function renderWalletListModal() {
+  $('modalEyebrow').textContent = 'WALLET LIST';
+  $('modalTitle').textContent = 'Your wallets';
+  const list = state.wallets.length
+    ? state.wallets.map(w => `
         <div class="wallet-menu-row">
-          <button style="flex:1;border:0;background:transparent;text-align:left;display:flex;align-items:center;gap:10px;padding:0;cursor:pointer" onclick="selectWallet('${w.id}')">
-            <div class="avatar">${w.name.slice(0,2).toUpperCase()}</div>
+          <button type="button" class="wallet-menu-info" style="flex:1;border:0;background:transparent;text-align:left;display:flex;align-items:center;gap:10px;padding:0;cursor:pointer" data-select-wallet="${esc(w.id)}">
+            <div class="avatar" aria-hidden="true">${esc(w.name.slice(0, 2).toUpperCase())}</div>
             <div class="wallet-menu-info">
-              <strong>${w.name}</strong>
-              <small>Watch-only · ${short(w.address)}</small>
+              <strong>${esc(w.name)}</strong>
+              <small>Watch-only · ${esc(short(w.address))}</small>
             </div>
           </button>
-          <button class="wallet-menu-button" onclick="this.nextElementSibling.classList.toggle('open')">⋮</button>
+          <button class="wallet-menu-button" type="button" aria-label="Wallet options" aria-haspopup="menu" onclick="this.nextElementSibling.classList.toggle('open')">⋮</button>
           <div class="wallet-actions">
-            <button onclick="renameWalletById('${w.id}')">Rename</button>
-            <button onclick="deleteWalletById('${w.id}')">Delete</button>
+            <button type="button" data-rename="${esc(w.id)}">Rename</button>
+            <button type="button" data-delete="${esc(w.id)}">Delete</button>
           </div>
         </div>
       `).join('')
     : '<div class="empty">No wallets yet. Add a watch wallet to begin.</div>';
-  $('modalContent').innerHTML=`
+  $('modalContent').innerHTML = `
     <div id="walletList">${list}</div>
-    <button class="btn primary full" id="addWatchWalletFromList" style="margin-top:18px">＋ Add watch wallet</button>
+    <button class="btn primary full" id="addWatchWalletFromList" style="margin-top:18px" type="button">＋ Add watch wallet</button>
   `;
-  $('addWatchWalletFromList').onclick=()=>renderWatchWalletModal();
+  $('addWatchWalletFromList').onclick = () => renderWatchWalletModal();
+  $('modalContent').querySelectorAll('[data-select-wallet]').forEach(b => b.onclick = () => selectWallet(b.dataset.selectWallet));
+  $('modalContent').querySelectorAll('[data-rename]').forEach(b => b.onclick = () => renameWalletById(b.dataset.rename));
+  $('modalContent').querySelectorAll('[data-delete]').forEach(b => b.onclick = () => deleteWalletById(b.dataset.delete));
 }
-function selectWallet(id){state.active=id;const w=state.wallets.find(x=>x.id===id);if(!w)return;state.mode='watch';state.tab='dashboard';closeModal();updateWalletChrome();setMode('watch');toast(w.name+' selected');if(w.address&&ethers.isAddress(w.address))syncWallet()}
-function updateTotalBalance(){const w=state.wallets.find(x=>x.id===state.active);let total=0;if(w){for(const n of NETWORKS){const row=w.balances?.[n.id]||{};for(const [symbol,amount] of Object.entries(row)){const numeric=Number(amount)||0;if(numeric<=0)continue;total+=numeric*priceForAsset(symbol,n)}}}const el=$('totalBalance');if(el)el.innerHTML='$'+fmt(Math.max(0,total),2).replace(/(\.\d{2})$/, '<small>$1</small>');const status=$('balancePercent');if(status)status.textContent=w?'LIVE TOTAL':'SYNC PENDING';const change=$('balanceChange');if(change)change.textContent=w?'Across all networks':'—'}
-function renderAssets(){updateTotalBalance();const w=state.wallets.find(x=>x.id===state.active);const rows=NETWORKS.flatMap(n=>[n.native,...Object.keys(n.tokens||{})].map(symbol=>({network:n.name,networkId:n.id,symbol,amount:Number(w?.balances?.[n.id]?.[symbol]||0),price:priceForAsset(symbol,n)}))).filter(a=>a.amount>0);$('assetGrid').innerHTML=rows.length?rows.map(a=>`<button class="asset-card" data-send-symbol="${a.symbol}" data-send-network="${a.networkId}">${currencyAvatar(a.symbol,a.network)}<div class="asset-info"><h3>${a.symbol}</h3><small>${currencyMeta(a.symbol).label} · ${a.network}</small></div><div class="asset-amount">${fmt(a.amount,4)} ${a.symbol}</div><div class="asset-value">$${fmt(a.amount*a.price)}</div></button>`).join(''):'<div class="empty" style="border:0">No funded assets found across the connected networks. Refresh after funding this address.</div>';document.querySelectorAll('[data-send-symbol]').forEach(button=>button.onclick=()=>sendWithPrefill(button.dataset.sendNetwork,button.dataset.sendSymbol))}
-function sendWithPrefill(networkId,symbol){
-  const network=NETWORKS.find(n=>n.id===networkId);
-  if(!network)return;
-  const targetAsset=(symbol===network.native)?'native':symbol;
+function selectWallet(id) {
+  state.active = id;
+  const w = state.wallets.find(x => x.id === id); if (!w) return;
+  state.mode = 'watch'; state.tab = 'dashboard';
+  closeModal(); updateWalletChrome(); setMode();
+  toast(w.name + ' selected');
+  if (w.address && ethers.isAddress(w.address)) syncWallet();
+}
+
+/* ============================================================
+   BALANCE + ASSETS
+   ============================================================ */
+function updateTotalBalance() {
+  const w = state.wallets.find(x => x.id === state.active);
+  let total = 0;
+  if (w) {
+    for (const n of NETWORKS) {
+      const row = w.balances?.[n.id] || {};
+      for (const [symbol, amount] of Object.entries(row)) {
+        const numeric = Number(amount) || 0;
+        if (numeric <= 0) continue;
+        total += numeric * priceForAsset(symbol, n);
+      }
+    }
+  }
+  const el = $('totalBalance');
+  if (el) el.innerHTML = '$' + fmt(Math.max(0, total), 2).replace(/(\.\d{2})$/, '<small>$1</small>');
+}
+function renderAssets() {
+  updateTotalBalance();
+  const w = state.wallets.find(x => x.id === state.active);
+  const rows = NETWORKS.flatMap(n => [n.native, ...Object.keys(n.tokens || {})].map(symbol => ({
+    network: n.name, networkId: n.id, symbol,
+    amount: Number(w?.balances?.[n.id]?.[symbol] || 0),
+    price: priceForAsset(symbol, n)
+  }))).filter(a => a.amount > 0);
+  $('assetGrid').innerHTML = rows.length
+    ? rows.map(a => `<button class="asset-card" data-send-symbol="${esc(a.symbol)}" data-send-network="${esc(a.networkId)}">${currencyAvatar(a.symbol, a.network)}<div class="asset-info"><h3>${esc(a.symbol)}</h3><small>${esc(currencyMeta(a.symbol).label)} · ${esc(a.network)}</small></div><div class="asset-amount">${fmt(a.amount, 4)} ${esc(a.symbol)}</div><div class="asset-value">$${fmt(a.amount * a.price)}</div></button>`).join('')
+    : '<div class="empty" style="border:0">No funded assets found across the connected networks. Refresh after funding this address.</div>';
+  document.querySelectorAll('[data-send-symbol]').forEach(button => button.onclick = () => sendWithPrefill(button.dataset.sendNetwork, button.dataset.sendSymbol));
+}
+function sendWithPrefill(networkId, symbol) {
+  const network = NETWORKS.find(n => n.id === networkId); if (!network) return;
+  const targetAsset = (symbol === network.native) ? 'native' : symbol;
   showView('send');
-  const networkSelect=$('sendNetwork');
-  networkSelect.value=network.id;
+  const networkSelect = $('sendNetwork');
+  networkSelect.value = network.id;
   refreshChoiceDisplay('sendNetwork');
   refreshAssetOptions();
-  const assetSelect=$('sendAsset');
-  if(assetSelect){
-    const exists=[...assetSelect.options].some(o=>o.value===targetAsset);
-    assetSelect.value=exists?targetAsset:'native';
+  const assetSelect = $('sendAsset');
+  if (assetSelect) {
+    const exists = [...assetSelect.options].some(o => o.value === targetAsset);
+    assetSelect.value = exists ? targetAsset : 'native';
     refreshChoiceDisplay('sendAsset');
   }
   prepareSend();
-  toast('Ready to send '+symbol+' on '+network.name);
+  toast('Ready to send ' + symbol + ' on ' + network.name);
 }
-function refreshChoiceDisplay(id){const select=$(id);if(!select)return;const wrap=select.parentElement;if(!wrap||!wrap.classList.contains('choice-control'))return;const items=wrap.__items||[];const item=items.find(x=>x.value===select.value);if(!item)return;const trigger=wrap.querySelector('.choice-trigger');if(trigger)trigger.innerHTML=item.mark+`<span class="choice-copy"><strong>${item.title}</strong><small>${item.subtitle}</small></span>`;const menu=wrap.querySelector('.choice-menu');if(menu)menu.querySelectorAll('.choice-option').forEach(b=>b.classList.toggle('selected',b.dataset.choice===select.value))}
-function setupChoice(id){const select=$(id);if(!select)return null;if(select.dataset.enhanced)return select.parentElement;const wrap=document.createElement('div');wrap.className='choice-control';select.parentNode.insertBefore(wrap,select);wrap.appendChild(select);select.classList.add('choice-native');select.dataset.enhanced='1';const trigger=document.createElement('button');trigger.type='button';trigger.className='choice-trigger';const menu=document.createElement('div');menu.className='choice-menu';wrap.append(trigger,menu);trigger.onclick=e=>{e.stopPropagation();document.querySelectorAll('.choice-menu.open').forEach(m=>m!==menu&&m.classList.remove('open'));menu.classList.toggle('open')};document.addEventListener('click',e=>{if(!wrap.contains(e.target))menu.classList.remove('open')});return wrap}
-function setChoiceOptions(id,items){const select=$(id);const wrap=setupChoice(id);if(!select||!wrap)return;wrap.__items=items;const trigger=wrap.querySelector('.choice-trigger'),menu=wrap.querySelector('.choice-menu');const wanted=select.value;select.innerHTML=items.map(x=>`<option value="${x.value}"${x.disabled?' disabled':''}>${x.label||x.title}</option>`).join('');const chosen=items.find(x=>x.value===wanted&&!x.disabled)||items.find(x=>!x.disabled)||items[0];select.value=chosen?.value||'';const render=()=>{const item=items.find(x=>x.value===select.value)||chosen;if(!item)return;trigger.innerHTML=item.mark+`<span class="choice-copy"><strong>${item.title}</strong><small>${item.subtitle}</small></span>`;menu.innerHTML=items.map(x=>`<button type="button" class="choice-option ${x.value===select.value?'selected':''}${x.disabled?' disabled':''}" data-choice="${x.value}"${x.disabled?' disabled':''}>${x.mark}<span class="choice-copy"><strong>${x.title}</strong><small>${x.subtitle}</small></span></button>`).join('');menu.querySelectorAll('[data-choice]:not([disabled])').forEach(b=>b.onclick=()=>{select.value=b.dataset.choice;render();menu.classList.remove('open');select.dispatchEvent(new Event('change',{bubbles:true}))})};render()}
-function networkDisplayName(n){return n.id==='ethereum'?n.name+' · ERC20':n.id==='bsc'?n.name+' · BEP20':n.name}
-function populateSelects(){setChoiceOptions('sendNetwork',NETWORKS.map(n=>({value:n.id,title:networkDisplayName(n),subtitle:n.native+' · network',mark:networkAvatar(n.name,n.native)})));refreshAssetOptions()}
-function verifiedTokenFor(n,symbol){const t=n?.tokens?.[symbol];return !!(t&&t.address&&ethers.isAddress(t.address)&&Number.isInteger(Number(t.decimals)))}function refreshAssetOptions(){const n=NETWORKS.find(x=>x.id===$('sendNetwork').value)||NETWORKS[0];const items=[{value:'native',title:n.native,subtitle:currencyMeta(n.native).label+' · '+n.name,mark:currencyAvatar(n.native,n.name)}];for(const symbol of Object.keys(n.tokens||{})){if(symbol===n.native)continue;items.push({value:symbol,title:symbol,subtitle:currencyMeta(symbol).label+' · '+n.name+' · Verified',mark:currencyAvatar(symbol,n.name)})}setChoiceOptions('sendAsset',items)}
-const TOKEN_PRICE_IDS={BTC:'bitcoin',ETH:'ethereum',BNB:'binancecoin',USDT:'tether',USDC:'usd-coin',XRP:'ripple',SOL:'solana',TRX:'tron',HYPE:'hyperliquid',DOGE:'dogecoin',ZEC:'zcash',WBTC:'wrapped-bitcoin',LINK:'chainlink',ADA:'cardano',XLM:'stellar',BCH:'bitcoin-cash',USDE:'ethena-usde',TON:'the-open-network',LTC:'litecoin',HBAR:'hedera-hashgraph'};function priceForAsset(symbol,n){const id=TOKEN_PRICE_IDS[symbol];if(id&&state.prices[id]!=null)return Number(state.prices[id]||0);if(symbol==='USDT'||symbol==='USDC'||symbol==='USDE')return 1;return Number(state.prices[n.nativePrice]||0)}
-const NETWORK_LOGOS={ethereum:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/info/logo.png',arbitrum:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/arbitrum/info/logo.png',polygon:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/polygon/info/logo.png',optimism:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/optimism/info/logo.png',avalanche:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/avalanchec/info/logo.png',bsc:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/smartchain/info/logo.png',celo:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/celo/info/logo.png',base:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/base/info/logo.png',scroll:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/scroll/info/logo.png',linea:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/linea/info/logo.png',blast:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/blast/info/logo.png',opbnb:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/opbnb/info/logo.png',palm:'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/palm/info/logo.png'};function networkAvatar(network,native){const n=NETWORKS.find(x=>x.name===network||x.id===network);const key=n?.id||String(network||'').toLowerCase().replace(/[^a-z0-9]+/g,'');const src=NETWORK_LOGOS[key]||('https://cdn.simpleicons.org/'+(key||'circle')+'/2775CA');const fallback='https://cdn.simpleicons.org/'+(key||'circle')+'/2775CA';return `<span class="asset-mark" title="${network}"><img src="${src}" data-fallback="${fallback}" alt="${network}" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none';this.nextElementSibling.style.display='inline'}"><span style="display:none">${String(native||network).slice(0,1)}</span></span>`}
-function assetDecimalsFor(n,asset){if(asset&&asset!==n.native&&n.tokens?.[asset])return Number(n.tokens[asset].decimals||18);return 18}function decimalString(value,decimals){let text=String(value??'0').trim();if(!text||text==='NaN'||text==='Infinity')return '0';if(text.toLowerCase().includes('e')){text=Number(text).toFixed(Math.min(decimals,18))}let parts=text.split('.');let whole=(parts[0]||'0').replace(/[^0-9-]/g,'')||'0';let frac=(parts[1]||'').replace(/[^0-9]/g,'').slice(0,decimals);frac=frac.replace(/0+$/,'');return frac?whole+'.'+frac:whole}function amountToRaw(value,decimals){return ethers.parseUnits(decimalString(value,decimals),decimals)}
-function fullBalanceValue(){const x=resolvedSendAmount();const w=state.wallets.find(item=>item.id===state.active);let amount=Number(w?.balances?.[x.network.id]?.[x.asset]||0);if(x.asset===x.network.native){const fee=state.feeEstimate?.network===x.network.id?Number(state.feeEstimate.native||0):0;amount=Math.max(0,amount-fee*1.15)}const decimals=assetDecimalsFor(x.network,x.asset);amount=Number(decimalString(amount,decimals));return x.unit==='usd'?amount*x.price:amount}
-function useFullBalance(){const x=resolvedSendAmount();const value=fullBalanceValue();$('sendAmount').value=decimalString(value, x.unit==='usd'?6:assetDecimalsFor(x.network,x.asset));prepareSend();toast('Full available balance loaded'+(x.asset===x.network.native?' with fee reserve':''))}
-function resolvedSendAmount(){const n=NETWORKS.find(x=>x.id===$('sendNetwork').value)||NETWORKS[0];const asset=$('sendAsset').value==='native'?n.native:$('sendAsset').value;const entered=Number($('sendAmount').value)||0;const unit=$('amountUnit').value;const price=priceForAsset(asset,n);return {network:n,asset,entered,unit,price,amount:unit==='usd'&&price>0?entered/price:entered}}
-async function estimateFeeForCurrent(){const x=resolvedSendAmount();const feeNativeEl=$('feeNative'),feeUsdEl=$('feeUsd');if(feeNativeEl)feeNativeEl.textContent='Calculating…';if(feeUsdEl)feeUsdEl.textContent='Calculating…';try{const provider=new ethers.JsonRpcProvider(rpcFor(x.network));const fd=await provider.getFeeData();const gasLimit=x.asset===x.network.native?21000n:100000n;const gasPrice=fd.maxFeePerGas||fd.gasPrice;if(!gasPrice)throw Error('Gas price unavailable');const native=Number(ethers.formatEther(gasPrice*gasLimit));const nativeUsd=priceForAsset(x.network.native,x.network);const usd=native*nativeUsd;state.feeEstimate={native,usd,gasLimit:String(gasLimit),gasPrice:String(gasPrice),network:x.network.id,nativeUsdPrice:nativeUsd};if(feeNativeEl)feeNativeEl.textContent=fmt(native,8)+' '+x.network.native;if(feeUsdEl)feeUsdEl.textContent=nativeUsd>0?'$'+fmt(usd,2):'—'}catch(e){state.feeEstimate=null;if(feeNativeEl)feeNativeEl.textContent='Unavailable';if(feeUsdEl)feeUsdEl.textContent='—'}}
-function prepareSend(){const x=resolvedSendAmount();const available=state.wallets.find(w=>w.id===state.active)?.balances?.[x.network.id]?.[x.asset]||0;$('availableAmount').textContent='Available '+fmt(available,6)+' '+x.asset;$('amountConversion').textContent=x.unit==='usd'?'≈ '+fmt(x.amount,6)+' '+x.asset+' · $'+fmt(x.entered):'≈ $'+fmt(x.amount*x.price);estimateFeeForCurrent();$('sendModeBadge').textContent='WATCH-ONLY';$('sendEyebrow').textContent='BUILD UNSIGNED TRANSACTION';$('sendTitle').textContent='Prepare a transaction';$('sendSubtitle').textContent='Build, export, sign offline, then broadcast.'}
-async function fetchPrices(){const ids=[...new Set([...NETWORKS.map(n=>n.nativePrice),...Object.values(TOKEN_PRICE_IDS),'tether','usd-coin'])].filter(Boolean).join(',');try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+ids+'&vs_currencies=usd');if(!r.ok)throw Error('Price API '+r.status);const data=await r.json();state.prices=Object.fromEntries(Object.entries(data).map(([k,v])=>[k,Number(v.usd)||0]));state.prices.tether=1;state.prices['usd-coin']=1}catch(e){toast('Price service unavailable; USD values are marked unavailable until refresh')}renderAssets();prepareSend()}
-async function syncWallet(){const w=state.wallets.find(x=>x.id===state.active);if(!w){updateWalletChrome();return}toast('Loading balances across supported networks…');await fetchPrices();if(!w.address||!ethers.isAddress(w.address)){updateWalletChrome();return}const balanceDelay=ms=>new Promise(resolve=>setTimeout(resolve,ms));for(const n of NETWORKS){if(!isEvmNetwork(n))continue;try{const provider=new ethers.JsonRpcProvider(rpcFor(n));const nativeRaw=await providerBalance(provider,w.address);const row={[n.native]:Number(ethers.formatEther(nativeRaw))};for(const symbol of Object.keys(n.tokens||{})){row[symbol]=await readTokenBalance(provider,w.address,n.tokens[symbol]);await balanceDelay(280)}w.balances[n.id]=row}catch(e){w.balances[n.id] ||= {};w.balances[n.id][n.native] ??= 0;for(const symbol of Object.keys(n.tokens||{}))w.balances[n.id][symbol] ??= 0}await balanceDelay(420)}updateWalletChrome();const loaded=NETWORKS.filter(n=>w.balances[n.id]).length;fetchHistory();toast('Balances refreshed across '+loaded+' networks; loading history across all configured networks')}
+function refreshChoiceDisplay(id) {
+  const select = $(id); if (!select) return;
+  const wrap = select.parentElement; if (!wrap || !wrap.classList.contains('choice-control')) return;
+  const items = wrap.__items || [];
+  const item = items.find(x => x.value === select.value); if (!item) return;
+  const trigger = wrap.querySelector('.choice-trigger');
+  if (trigger) trigger.innerHTML = item.mark + `<span class="choice-copy"><strong>${esc(item.title)}</strong><small>${esc(item.subtitle)}</small></span>`;
+  const menu = wrap.querySelector('.choice-menu');
+  if (menu) menu.querySelectorAll('.choice-option').forEach(b => b.classList.toggle('selected', b.dataset.choice === select.value));
+}
+function setupChoice(id) {
+  const select = $(id); if (!select) return null;
+  if (select.dataset.enhanced) return select.parentElement;
+  const wrap = document.createElement('div'); wrap.className = 'choice-control';
+  select.parentNode.insertBefore(wrap, select); wrap.appendChild(select);
+  select.classList.add('choice-native'); select.dataset.enhanced = '1';
+  const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'choice-trigger'; trigger.setAttribute('aria-haspopup','listbox');
+  const menu = document.createElement('div'); menu.className = 'choice-menu';
+  wrap.append(trigger, menu);
+  trigger.onclick = e => {
+    e.stopPropagation();
+    document.querySelectorAll('.choice-menu.open').forEach(m => m !== menu && m.classList.remove('open'));
+    menu.classList.toggle('open');
+  };
+  document.addEventListener('click', e => { if (!wrap.contains(e.target)) menu.classList.remove('open'); });
+  return wrap;
+}
+function setChoiceOptions(id, items) {
+  const select = $(id); const wrap = setupChoice(id); if (!select || !wrap) return;
+  wrap.__items = items;
+  const trigger = wrap.querySelector('.choice-trigger'), menu = wrap.querySelector('.choice-menu');
+  const wanted = select.value;
+  select.innerHTML = items.map(x => `<option value="${esc(x.value)}"${x.disabled ? ' disabled' : ''}>${esc(x.label || x.title)}</option>`).join('');
+  const chosen = items.find(x => x.value === wanted && !x.disabled) || items.find(x => !x.disabled) || items[0];
+  select.value = chosen?.value || '';
+  const render = () => {
+    const item = items.find(x => x.value === select.value) || chosen;
+    if (!item) return;
+    trigger.innerHTML = item.mark + `<span class="choice-copy"><strong>${esc(item.title)}</strong><small>${esc(item.subtitle)}</small></span>`;
+    menu.innerHTML = items.map(x => `<button type="button" class="choice-option ${x.value === select.value ? 'selected' : ''}${x.disabled ? ' disabled' : ''}" data-choice="${esc(x.value)}"${x.disabled ? ' disabled' : ''}>${x.mark}<span class="choice-copy"><strong>${esc(x.title)}</strong><small>${esc(x.subtitle)}</small></span></button>`).join('');
+    menu.querySelectorAll('[data-choice]:not([disabled])').forEach(b => b.onclick = () => {
+      select.value = b.dataset.choice; render(); menu.classList.remove('open');
+      select.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+  };
+  render();
+}
+function networkDisplayName(n) { return n.id === 'ethereum' ? n.name + ' · ERC20' : n.id === 'bsc' ? n.name + ' · BEP20' : n.name; }
+function populateSelects() {
+  setChoiceOptions('sendNetwork', NETWORKS.map(n => ({ value: n.id, title: networkDisplayName(n), subtitle: n.native + ' · network', mark: networkAvatar(n.name, n.native) })));
+  refreshAssetOptions();
+}
+function verifiedTokenFor(n, symbol) {
+  const t = n?.tokens?.[symbol];
+  return !!(t && t.address && ethers.isAddress(t.address) && Number.isInteger(Number(t.decimals)));
+}
+function refreshAssetOptions() {
+  const n = NETWORKS.find(x => x.id === $('sendNetwork').value) || NETWORKS[0];
+  const items = [{ value: 'native', title: n.native, subtitle: currencyMeta(n.native).label + ' · ' + n.name, mark: currencyAvatar(n.native, n.name) }];
+  for (const symbol of Object.keys(n.tokens || {})) {
+    if (symbol === n.native) continue;
+    items.push({ value: symbol, title: symbol, subtitle: currencyMeta(symbol).label + ' · ' + n.name + ' · Verified', mark: currencyAvatar(symbol, n.name) });
+  }
+  setChoiceOptions('sendAsset', items);
+}
+const TOKEN_PRICE_IDS = {BTC:'bitcoin',ETH:'ethereum',BNB:'binancecoin',USDT:'tether',USDC:'usd-coin',XRP:'ripple',SOL:'solana',TRX:'tron',HYPE:'hyperliquid',DOGE:'dogecoin',ZEC:'zcash',WBTC:'wrapped-bitcoin',LINK:'chainlink',ADA:'cardano',XLM:'stellar',BCH:'bitcoin-cash',USDE:'ethena-usde',TON:'the-open-network',LTC:'litecoin',HBAR:'hedera-hashgraph'};
+function priceForAsset(symbol, n) {
+  const id = TOKEN_PRICE_IDS[symbol];
+  if (id && state.prices[id] != null) return Number(state.prices[id] || 0);
+  if (symbol === 'USDT' || symbol === 'USDC' || symbol === 'USDE') return 1;
+  return Number(state.prices[n.nativePrice] || 0);
+}
+const NETWORK_LOGOS = {ethereum:'blockchains/ethereum/info/logo.png',arbitrum:'blockchains/arbitrum/info/logo.png',polygon:'blockchains/polygon/info/logo.png',optimism:'blockchains/optimism/info/logo.png',avalanche:'blockchains/avalanchec/info/logo.png',bsc:'blockchains/smartchain/info/logo.png',celo:'blockchains/celo/info/logo.png',base:'blockchains/base/info/logo.png',scroll:'blockchains/scroll/info/logo.png',linea:'blockchains/linea/info/logo.png',blast:'blockchains/blast/info/logo.png',opbnb:'blockchains/opbnb/info/logo.png',palm:'blockchains/palm/info/logo.png'};
+function networkAvatar(network, native) {
+  const n = NETWORKS.find(x => x.name === network || x.id === network);
+  const key = n?.id || String(network || '').toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const path = NETWORK_LOGOS[key];
+  const src = path ? (TRUSTWALLET_CDN + path) : ('https://cdn.simpleicons.org/' + (key || 'circle') + '/2775CA');
+  const fallback = 'https://cdn.simpleicons.org/' + (key || 'circle') + '/2775CA';
+  return `<span class="asset-mark" title="${esc(network)}"><img loading="lazy" decoding="async" src="${esc(src)}" data-fallback="${esc(fallback)}" alt="${esc(network)}" onerror="if(this.dataset.fallback && this.src!==this.dataset.fallback){this.src=this.dataset.fallback}else{this.style.display='none';this.nextElementSibling.style.display='inline'}"><span style="display:none">${esc(String(native || network).slice(0, 1))}</span></span>`;
+}
+function assetDecimalsFor(n, asset) { if (asset && asset !== n.native && n.tokens?.[asset]) return Number(n.tokens[asset].decimals || 18); return 18; }
+function decimalString(value, decimals) {
+  let text = String(value ?? '0').trim();
+  if (!text || text === 'NaN' || text === 'Infinity') return '0';
+  if (text.toLowerCase().includes('e')) text = Number(text).toFixed(Math.min(decimals, 18));
+  let parts = text.split('.');
+  let whole = (parts[0] || '0').replace(/[^0-9]/g, '') || '0';
+  let frac = (parts[1] || '').replace(/[^0-9]/g, '').slice(0, decimals).replace(/0+$/, '');
+  return frac ? whole + '.' + frac : whole;
+}
+function amountToRaw(value, decimals) { return ethers.parseUnits(decimalString(value, decimals), decimals); }
+function fullBalanceValue() {
+  const x = resolvedSendAmount();
+  const w = state.wallets.find(item => item.id === state.active);
+  let amount = Number(w?.balances?.[x.network.id]?.[x.asset] || 0);
+  if (x.asset === x.network.native) {
+    const fee = state.feeEstimate?.network === x.network.id ? Number(state.feeEstimate.native || 0) : 0;
+    amount = Math.max(0, amount - fee * 1.15);
+  }
+  const decimals = assetDecimalsFor(x.network, x.asset);
+  amount = Number(decimalString(amount, decimals));
+  return x.unit === 'usd' ? amount * x.price : amount;
+}
+function useFullBalance() {
+  const x = resolvedSendAmount();
+  const value = fullBalanceValue();
+  $('sendAmount').value = decimalString(value, x.unit === 'usd' ? 6 : assetDecimalsFor(x.network, x.asset));
+  prepareSend();
+  toast('Full available balance loaded' + (x.asset === x.network.native ? ' with fee reserve' : ''));
+}
+function resolvedSendAmount() {
+  const n = NETWORKS.find(x => x.id === $('sendNetwork').value) || NETWORKS[0];
+  const asset = $('sendAsset').value === 'native' ? n.native : $('sendAsset').value;
+  const entered = Number($('sendAmount').value) || 0;
+  const unit = $('amountUnit').value;
+  const price = priceForAsset(asset, n);
+  return { network: n, asset, entered, unit, price, amount: unit === 'usd' && price > 0 ? entered / price : entered };
+}
 
 /* ============================================================
-   HISTORY — unchanged
+   FEE ESTIMATION (with race guard)
    ============================================================ */
-function historyApiUrl(n, params, useFallback){
-  const q = new URLSearchParams({ module:'account', ...params });
-  if (n.id === 'avalanche' && !useFallback) {
-    return 'https://api.routescan.io/v2/network/mainnet/evm/43114/etherscan/api?' + q.toString();
+let feeReqId = 0;
+async function estimateFeeForCurrent() {
+  const x = resolvedSendAmount();
+  const feeNativeEl = $('feeNative'), feeUsdEl = $('feeUsd');
+  const myId = ++feeReqId;
+  if (feeNativeEl) feeNativeEl.textContent = 'Calculating…';
+  if (feeUsdEl) feeUsdEl.textContent = 'Calculating…';
+  try {
+    const provider = providerFor(x.network);
+    const fd = await provider.getFeeData();
+    if (myId !== feeReqId) return;
+    const gasLimit = x.asset === x.network.native ? 21000n : 100000n;
+    const gasPrice = fd.maxFeePerGas || fd.gasPrice;
+    if (!gasPrice) throw Error('Gas price unavailable');
+    const native = Number(ethers.formatEther(gasPrice * gasLimit));
+    const nativeUsd = priceForAsset(x.network.native, x.network);
+    const usd = native * nativeUsd;
+    state.feeEstimate = { native, usd, gasLimit: String(gasLimit), gasPrice: String(gasPrice), network: x.network.id, nativeUsdPrice: nativeUsd };
+    if (feeNativeEl) feeNativeEl.textContent = fmt(native, 8) + ' ' + x.network.native;
+    if (feeUsdEl) feeUsdEl.textContent = nativeUsd > 0 ? '$' + fmt(usd, 2) : '—';
+  } catch (e) {
+    if (myId !== feeReqId) return;
+    console.warn('Fee estimation failed', e?.message);
+    state.feeEstimate = null;
+    if (feeNativeEl) feeNativeEl.textContent = 'Unavailable';
+    if (feeUsdEl) feeUsdEl.textContent = '—';
   }
-  if (n.id === 'base' && !useFallback) {
-    return 'https://base.blockscout.com/api?' + q.toString();
+}
+function prepareSend() {
+  const x = resolvedSendAmount();
+  const available = state.wallets.find(w => w.id === state.active)?.balances?.[x.network.id]?.[x.asset] || 0;
+  $('availableAmount').textContent = 'Available ' + fmt(available, 6) + ' ' + x.asset;
+  $('amountConversion').textContent = x.unit === 'usd' ? '≈ ' + fmt(x.amount, 6) + ' ' + x.asset + ' · $' + fmt(x.entered) : '≈ $' + fmt(x.amount * x.price);
+  estimateFeeForCurrent();
+  $('sendModeBadge').textContent = 'WATCH-ONLY';
+  $('sendEyebrow').textContent = 'BUILD UNSIGNED TRANSACTION';
+  $('sendTitle').textContent = 'Prepare a transaction';
+  $('sendSubtitle').textContent = 'Build, export, sign offline, then broadcast.';
+}
+async function fetchPrices() {
+  const ids = [...new Set([...NETWORKS.map(n => n.nativePrice), ...Object.values(TOKEN_PRICE_IDS), 'tether', 'usd-coin'])].filter(Boolean).join(',');
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + ids + '&vs_currencies=usd');
+    if (!r.ok) throw Error('Price API ' + r.status);
+    const data = await r.json();
+    state.prices = Object.fromEntries(Object.entries(data).map(([k, v]) => [k, Number(v.usd) || 0]));
+    state.prices.tether = 1; state.prices['usd-coin'] = 1;
+    state.pricesUpdatedAt = Date.now();
+  } catch (e) {
+    console.warn('Price fetch failed', e?.message);
+    toast('Price service unavailable; USD values are marked unavailable until refresh');
   }
+  renderAssets(); prepareSend();
+}
+async function syncWallet() {
+  const w = state.wallets.find(x => x.id === state.active);
+  if (!w) { updateWalletChrome(); return; }
+  toast('Loading balances across supported networks…');
+  await fetchPrices();
+  if (!w.address || !ethers.isAddress(w.address)) { updateWalletChrome(); return; }
+  const evmNets = NETWORKS.filter(isEvmNetwork);
+  let done = 0;
+  await mapLimit(evmNets, 4, async n => {
+    try {
+      const provider = providerFor(n);
+      const nativeRaw = await providerBalance(provider, w.address);
+      const row = { [n.native]: Number(ethers.formatEther(nativeRaw)) };
+      for (const symbol of Object.keys(n.tokens || {})) {
+        row[symbol] = await readTokenBalance(provider, w.address, n.tokens[symbol]);
+        await sleep(120);
+      }
+      w.balances[n.id] = row;
+    } catch (e) {
+      console.warn('Network balance failed', n.id, e?.message);
+      w.balances[n.id] ||= {};
+      w.balances[n.id][n.native] ??= 0;
+      for (const symbol of Object.keys(n.tokens || {})) w.balances[n.id][symbol] ??= 0;
+    }
+    done++;
+  });
+  state.balancesUpdatedAt = Date.now();
+  const updEl = $('balancesUpdated');
+  if (updEl) updEl.textContent = '· updated ' + new Date(state.balancesUpdatedAt).toLocaleTimeString();
+  updateWalletChrome();
+  const loaded = NETWORKS.filter(n => w.balances[n.id]).length;
+  fetchHistory();
+  toast('Balances refreshed across ' + loaded + ' networks; loading history');
+}
+
+/* ============================================================
+   HISTORY
+   ============================================================ */
+function historyApiUrl(n, params, useFallback) {
+  const q = new URLSearchParams({ module: 'account', ...params });
+  if (n.id === 'avalanche' && !useFallback) return 'https://api.routescan.io/v2/network/mainnet/evm/43114/etherscan/api?' + q.toString();
+  if (n.id === 'base' && !useFallback) return 'https://base.blockscout.com/api?' + q.toString();
   q.set('chainid', String(n.chainId));
   q.set('apikey', EMBEDDED_API.etherscanApiKey);
   return 'https://api.etherscan.io/v2/api?' + q.toString();
 }
-async function fetchHistory(){
+async function fetchHistory() {
   const wallet = state.wallets.find(x => x.id === state.active);
-  if (!wallet || !ethers.isAddress(wallet.address)) {
-    toast('Add a watch wallet first');
-    return;
-  }
+  if (!wallet || !ethers.isAddress(wallet.address)) { toast('Add a watch wallet first'); return; }
   const address = wallet.address.toLowerCase();
   state.historyDiagnostics = [];
   state.history = [];
   state.historyLoading = true;
-  state.historyFilter = state.historyFilter || 'all';
   renderHistory();
-  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
   const explorerTx = n => transactionExplorerBase(n);
   const pageSizeFor = n => n.id === 'base' ? 100 : 10000;
   const maxPagesFor = n => n.id === 'base' ? 50 : 25;
-  const delayFor    = n => n.id === 'base' ? 400 : 250;
-  async function tryFetchUrl(url, offset){
-    const response = await fetch(url, { cache:'no-store' });
+  const delayFor = n => n.id === 'base' ? 400 : 250;
+  async function tryFetchUrl(url, offset) {
+    const response = await fetch(url, { cache: 'no-store' });
     if (!response.ok) throw Error('HTTP ' + response.status);
     const payload = await response.json();
-    if (Array.isArray(payload.result)) {
-      return { items: payload.result, done: payload.result.length < offset };
-    }
+    if (Array.isArray(payload.result)) return { items: payload.result, done: payload.result.length < offset };
     const message = String(payload.result || payload.message || '');
-    if (/no transactions found|no records found|no tx found|no result/i.test(message)) {
-      return { items: [], done: true };
-    }
+    if (/no transactions found|no records found|no tx found|no result/i.test(message)) return { items: [], done: true };
     if (payload.status === '0') return { items: [], done: true };
     throw Error(message || 'Invalid explorer response');
   }
-  async function requestPage(n, params, label, page){
+  async function requestPage(n, params, label, page) {
     const offset = pageSizeFor(n);
-    const primaryUrl  = historyApiUrl(n, { ...params, address, page:String(page), offset:String(offset), sort:'desc' });
-    const fallbackUrl = historyApiUrl(n, { ...params, address, page:String(page), offset:String(offset), sort:'desc' }, true);
-    for (let attempt = 1; attempt <= 3; attempt++){
-      try {
-        return await tryFetchUrl(primaryUrl, offset);
-      } catch (error) {
+    const primaryUrl = historyApiUrl(n, { ...params, address, page: String(page), offset: String(offset), sort: 'desc' });
+    const fallbackUrl = historyApiUrl(n, { ...params, address, page: String(page), offset: String(offset), sort: 'desc' }, true);
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try { return await tryFetchUrl(primaryUrl, offset); }
+      catch (error) {
         if (attempt === 3) {
           if (fallbackUrl && fallbackUrl !== primaryUrl) {
             try {
               const result = await tryFetchUrl(fallbackUrl, offset);
-              state.historyDiagnostics.push({ network:n.name, label, url:fallbackUrl, error:'Used fallback source after primary failed: ' + error.message });
+              state.historyDiagnostics.push({ network: n.name, label, url: fallbackUrl, error: 'Used fallback source after primary failed: ' + error.message });
               return result;
             } catch (fallbackError) {
-              state.historyDiagnostics.push({ network:n.name, label, url:primaryUrl, error:error.message });
-              state.historyDiagnostics.push({ network:n.name, label, url:fallbackUrl, error:fallbackError.message });
+              state.historyDiagnostics.push({ network: n.name, label, url: primaryUrl, error: error.message });
+              state.historyDiagnostics.push({ network: n.name, label, url: fallbackUrl, error: fallbackError.message });
             }
           } else {
-            state.historyDiagnostics.push({ network:n.name, label, url:primaryUrl, error:error.message });
+            state.historyDiagnostics.push({ network: n.name, label, url: primaryUrl, error: error.message });
           }
-        } else {
-          await sleep(attempt * 1000);
-        }
+        } else await sleep(attempt * 1000);
       }
     }
     return { items: [], done: true };
   }
-  async function fetchPages(n, params, label){
+  async function fetchPages(n, params, label) {
     const all = [];
     const maxPages = maxPagesFor(n);
     const delay = delayFor(n);
-    for (let page = 1; page <= maxPages; page++){
+    for (let page = 1; page <= maxPages; page++) {
       const result = await requestPage(n, params, label, page);
       all.push(...result.items);
       if (result.done) break;
@@ -720,57 +1108,56 @@ async function fetchHistory(){
     }
     return all;
   }
-  function pushNative(n, items){
-    for (const tx of items){
+  function pushNative(n, items) {
+    for (const tx of items) {
       const incoming = String(tx.to || '').toLowerCase() === address;
       const amount = ethers.formatEther(tx.value || '0');
       const price = priceForAsset(n.native, n);
       state.history.push({
-        hash: tx.hash, network:n.id, networkName:n.name, asset:n.native, token:n.native,
-        tokenAddress:'native', amount, from:tx.from||'', to:tx.to||'',
+        hash: tx.hash, network: n.id, networkName: n.name, asset: n.native, token: n.native,
+        tokenAddress: 'native', amount, from: tx.from || '', to: tx.to || '',
         type: incoming ? 'receive' : 'send', incoming,
         block: Number(tx.blockNumber || 0), timestamp: Number(tx.timeStamp || 0) * 1000,
-        status: tx.isError==='1' || tx.txreceipt_status==='0' ? 'failed'
-              : tx.txreceipt_status==='1' ? 'success' : 'pending',
+        status: tx.isError === '1' || tx.txreceipt_status === '0' ? 'failed' : tx.txreceipt_status === '1' ? 'success' : 'pending',
         price, usdValue: Number(amount) * price,
-        sourceUrl: explorerTx(n) + (tx.hash || ''), logIndex:''
+        sourceUrl: explorerTx(n) + (tx.hash || ''), logIndex: ''
       });
     }
   }
-  function pushTokens(n, items){
-    for (const tx of items){
+  function pushTokens(n, items) {
+    for (const tx of items) {
       const incoming = String(tx.to || '').toLowerCase() === address;
       const symbol = String(tx.tokenSymbol || '').toUpperCase() || 'ERC-20';
       const configured = n.tokens?.[symbol] || {};
       const decimals = Number(tx.tokenDecimal || configured.decimals || 18);
       let amount = '0';
-      try { amount = ethers.formatUnits(BigInt(tx.value || '0'), decimals); } catch(e){}
+      try { amount = ethers.formatUnits(BigInt(tx.value || '0'), decimals); } catch (e) {}
       const token = tx.tokenSymbol || 'ERC-20';
       const price = priceForAsset(token, n);
       state.history.push({
-        hash: tx.hash, network:n.id, networkName:n.name, asset:token, token,
+        hash: tx.hash, network: n.id, networkName: n.name, asset: token, token,
         tokenAddress: tx.contractAddress || configured.address || '', amount,
-        from:tx.from||'', to:tx.to||'', type: incoming ? 'receive' : 'send', incoming,
+        from: tx.from || '', to: tx.to || '', type: incoming ? 'receive' : 'send', incoming,
         block: Number(tx.blockNumber || 0), timestamp: Number(tx.timeStamp || 0) * 1000,
-        status: tx.isError==='1' ? 'failed' : 'success',
+        status: tx.isError === '1' ? 'failed' : 'success',
         price, usdValue: Number(amount) * price,
         sourceUrl: explorerTx(n) + (tx.hash || ''), logIndex: String(tx.logIndex ?? '')
       });
     }
   }
-  for (const network of NETWORKS){
+  for (const network of NETWORKS) {
     if (typeof network.chainId !== 'number') continue;
-    if (network.id === 'bsc'){
-      state.historyDiagnostics.push({ network:network.name, label:'external', error:'BSC history is opened in BscScan' });
+    if (network.id === 'bsc') {
+      state.historyDiagnostics.push({ network: network.name, label: 'external', error: 'BSC history is opened in BscScan' });
       continue;
     }
     try {
-      pushNative(network, await fetchPages(network, { action:'txlist' }, 'native'));
+      pushNative(network, await fetchPages(network, { action: 'txlist' }, 'native'));
       await sleep(delayFor(network));
-      pushTokens(network, await fetchPages(network, { action:'tokentx' }, 'all tokens'));
+      pushTokens(network, await fetchPages(network, { action: 'tokentx' }, 'all tokens'));
       await sleep(delayFor(network));
-    } catch (error){
-      state.historyDiagnostics.push({ network:network.name, label:'network', error:error.message });
+    } catch (error) {
+      state.historyDiagnostics.push({ network: network.name, label: 'network', error: error.message });
     }
   }
   const seen = new Set();
@@ -778,63 +1165,423 @@ async function fetchHistory(){
     .filter(item => {
       const key = [item.network, item.hash, item.tokenAddress || item.asset, item.logIndex || item.type].join('|');
       if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
+      seen.add(key); return true;
     })
     .sort((a, b) => b.timestamp - a.timestamp);
   state.historyLoading = false;
   renderHistory();
 }
-function renderHistory(){const rows=$('historyRows');if(!rows)return;const activeWallet=state.wallets.find(x=>x.id===state.active);const bscLink=$('openBscScan');if(bscLink)bscLink.href=activeWallet?.address?'https://bscscan.com/address/'+encodeURIComponent(activeWallet.address):'#';const count=$('historyCount');if(state.historyLoading){if(count)count.textContent='…';rows.innerHTML='<div class="history-loading"><span class="history-spinner"></span><strong>Loading transaction history</strong><small>Checking all configured networks and tokens…</small></div>';return}const filter=state.historyFilter||'all';const visible=state.history.filter(t=>filter==='all'||(filter==='in'?t.incoming:!t.incoming));if(count)count.textContent=String(visible.length);document.querySelectorAll('[data-history-filter]').forEach(b=>b.classList.toggle('active',b.dataset.historyFilter===filter));if(!visible.length){rows.innerHTML='<div class="empty">No indexed transactions found for this filter. Refresh to load native transactions and token transfers across all configured networks.</div>';return}const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));rows.innerHTML=visible.map(t=>{const direction=t.incoming?'Received':'Sent';const address=t.incoming?t.from:t.to;const date=t.timestamp?new Date(t.timestamp).toLocaleString():'—';const amount=(t.incoming?'+':'−')+fmt(Number(t.amount)||0,6)+' '+esc(t.token);const usd='$'+fmt(Number(t.usdValue)||0,2);return `<div class="activity-row history-rich-row"><span class="activity-icon ${t.incoming?'':'out'}">${t.incoming?'↓':'↑'}</span><span class="activity-copy"><strong>${direction} ${esc(t.token)}</strong><small>${esc(t.networkName||t.network)} · ${esc(address||'—')} · block ${esc(t.block||'—')}</small><small class="history-hash">${esc(t.hash||'—')}</small></span><span class="activity-amount ${t.incoming?'positive':''}">${amount}<small class="history-usd">≈ ${usd}</small></span><span class="history-status">${esc(t.status||'pending')}</span><span class="history-date">${esc(date)} <a class="activity-link" href="${esc(t.sourceUrl||'#')}" target="_blank" rel="noreferrer">View</a></span></div>`}).join('')}
-function renderReceive(){const w=state.wallets.find(x=>x.id===state.active);const address=w?.address||'';$('receiveAddress').textContent=address||'Load or create a wallet';$('qrCaption').textContent=address||'Public address QR';$('receiveQr').innerHTML='';if(address&&window.QRCode)new QRCode($('receiveQr'),{text:address,width:180,height:180,colorDark:'#0a0e16',colorLight:'#ffffff'})}
-function signedRawFromInput(value){const raw=String(value||'').trim();if(!raw)return '';if(raw.startsWith('0x'))return raw;try{const parsed=JSON.parse(raw);return parsed.signedRaw||parsed.raw||parsed.signedTransaction||''}catch(e){return ''}}
-function broadcastSignedTransaction(){const raw=signedRawFromInput($('signedPayload')?.value);if(!raw){toast('Paste or scan a signed transaction first');return}let tx;try{tx=ethers.Transaction.from(raw)}catch(e){toast('The signed transaction format is invalid');return}const n=NETWORKS.find(x=>Number(x.chainId)===Number(tx.chainId));if(!n){toast('Unsupported signed transaction network');return}let symbol=n.native,amount='0',to=tx.to||'—';const tokenEntry=Object.entries(n.tokens||{}).find(([name,t])=>t?.address&&tx.to?.toLowerCase()===t.address.toLowerCase());if(tokenEntry){symbol=tokenEntry[0];try{const decoded=new ethers.Interface(['function transfer(address to,uint256 amount)']).decodeFunctionData('transfer',tx.data||'0x');to=decoded.to;amount=ethers.formatUnits(decoded.amount,Number(tokenEntry[1].decimals||6))}catch(e){amount='—'}}else{try{amount=ethers.formatEther(tx.value||0n)}catch(e){amount='—'}}const gasPrice=tx.maxFeePerGas??tx.gasPrice??0n;const feeNative=ethers.formatEther((tx.gasLimit||0n)*gasPrice);const feePrice=priceForAsset(n.native,n);const amountPrice=priceForAsset(symbol,n);const feeUsd=Number(feeNative)*feePrice;const amountUsd=Number(amount)*amountPrice;openModal('broadcast');$('modalEyebrow').textContent='SIGNED TRANSACTION';$('modalTitle').textContent='Broadcast signed transaction';$('modalContent').innerHTML='<div id="broadcastPreview"></div><button class="btn primary full" id="broadcastNow">Broadcast now</button>';$('broadcastPreview').innerHTML='<div class="notice">Review the transaction details before broadcasting.</div><div class="review-box broadcast-details"><div class="review-row"><span>Network</span><strong>'+n.name+'</strong></div><div class="review-row"><span>Sender</span><strong>'+ (tx.from||'—') +'</strong></div><div class="review-row"><span>Recipient</span><strong>'+to+'</strong></div><div class="review-row"><span>Quantity</span><strong>'+amount+' '+symbol+'</strong></div><div class="review-row"><span>Amount in USD</span><strong>'+(amountPrice>0?fmtUsd(amountUsd):'—')+'</strong></div><div class="review-row"><span>Network fee</span><strong>'+feeNative+' '+n.native+'</strong></div><div class="review-row"><span>Fee in USD</span><strong>'+(feePrice>0?fmtUsd(feeUsd):'—')+'</strong></div></div>';$('broadcastNow').onclick=()=>broadcastRawTransaction(raw,n)}
-async function broadcastRawTransaction(raw,n){try{const txRaw=signedRawFromInput(raw);if(!txRaw)throw Error('Paste a signed raw transaction first');const tx=ethers.Transaction.from(txRaw);const network=n||NETWORKS.find(x=>Number(x.chainId)===Number(tx.chainId));if(!network)throw Error('Unsupported signed transaction network');const provider=new ethers.JsonRpcProvider(rpcFor(network));const response=await provider.broadcastTransaction(txRaw);toast('Transaction broadcasted; waiting for confirmation…');const receipt=await response.wait(1);if(receipt&&(receipt.status===0n||receipt.status===0))throw Error('Transaction was mined but failed');let symbol=network.native,from=tx.from||'—',to=tx.to||'—',amount='—';const tokenEntry=Object.entries(network.tokens||{}).find(([name,t])=>t?.address&&tx.to?.toLowerCase()===t.address.toLowerCase());if(tokenEntry){symbol=tokenEntry[0];try{const decoded=new ethers.Interface(['function transfer(address to,uint256 amount)']).decodeFunctionData('transfer',tx.data||'0x');to=decoded.to;amount=ethers.formatUnits(decoded.amount,Number(tokenEntry[1].decimals||6))+' '+symbol}catch(e){amount=symbol}}else{try{amount=ethers.formatEther(tx.value||0n)+' '+symbol}catch(e){amount='—'}}const date=new Date().toLocaleString();$('modalEyebrow').textContent='SUCCESS';$('modalTitle').textContent='Transaction sent';$('modalContent').innerHTML='<div class="notice success-notice">✓ Transaction sent successfully</div><div class="review-box"><div class="review-row"><span>Network</span><strong>'+network.name+'</strong></div><div class="review-row"><span>Amount</span><strong>'+amount+'</strong></div><div class="review-row"><span>From</span><strong>'+from+'</strong></div><div class="review-row"><span>To</span><strong>'+to+'</strong></div><div class="review-row"><span>Date</span><strong>'+date+'</strong></div><div class="review-row"><span>Hash</span><strong class="hash-value">'+hashAnchor(network,response.hash,response.hash)+'</strong></div></div><button class="btn primary full" onclick="closeModal()">Close</button>';toast('Transaction sent successfully')}catch(e){const msg=String(e?.message||'');if(/user rejected|denied/i.test(msg)){toast('Transaction was rejected')}else{toast('Broadcast failed: '+(msg||'unknown error'))}}}
-function renderReviewModal(){const n=NETWORKS.find(x=>x.id===$('sendNetwork').value)||NETWORKS[0];const asset=$('sendAsset').value==='native'?n.native:$('sendAsset').value;const resolved=resolvedSendAmount();const amount=String(resolved.amount);const price=resolved.price;const usdValue=Number(amount)*price;const to=$('recipient').value.trim();const feeNative=state.feeEstimate?.network===n.id?state.feeEstimate.native:null;const feeUsd=state.feeEstimate?.network===n.id?state.feeEstimate.usd:null;$('modalEyebrow').textContent='UNSIGNED TRANSACTION';$('modalTitle').textContent='Export unsigned transaction';$('modalContent').innerHTML=`<div class="review-box"><div class="review-row"><span>Network</span><strong>${n.name} · chain ${n.chainId}</strong></div><div class="review-row"><span>Asset / amount</span><strong>${amount} ${asset}</strong></div><div class="review-row"><span>Amount (USD)</span><strong>${price>0?fmtUsd(usdValue):'—'}</strong></div><div class="review-row"><span>Recipient</span><strong>${to}</strong></div><div class="review-row"><span>Network fee</span><strong>${feeNative!=null?fmt(feeNative,8)+' '+n.native:'Calculating…'}</strong></div><div class="review-row"><span>Fee (USD)</span><strong>${feeUsd!=null&&feeUsd>0?fmtUsd(feeUsd):'—'}</strong></div><div class="review-row"><span>Total (USD)</span><strong>${(price>0&&feeUsd!=null)?fmtUsd(usdValue+feeUsd):'—'}</strong></div></div><button class="btn primary full" id="exportUnsigned">Build raw unsigned transaction + QR</button><p class="form-note">The exported JSON contains unsignedRaw, a complete EVM transaction with chainId, nonce, gas, value, and calldata. Transfer it to a separate signing wallet.</p>`;$('exportUnsigned')?.addEventListener('click',exportUnsigned)}
-function validateSend(){const w=state.wallets.find(x=>x.id===state.active);if(!w){toast('Add a watch wallet first');openModal('watch');return false}const n=NETWORKS.find(x=>x.id===$('sendNetwork').value)||NETWORKS[0];const asset=$('sendAsset').value;if(asset!=='native'&&!verifiedTokenFor(n,asset)){toast(asset+' is not verified on '+n.name+' and cannot be sent');return false}if(!ethers.isAddress($('recipient').value.trim())){toast('Enter a valid EVM recipient address');return false}if(!(Number($('sendAmount').value)>0)){toast('Enter an amount');return false}return true}
-async function buildUnsignedTransaction(){const x=resolvedSendAmount();if(x.asset!==x.network.native&&!verifiedTokenFor(x.network,x.asset))throw Error(x.asset+' is not verified on '+x.network.name+' and cannot be sent');const w=state.wallets.find(item=>item.id===state.active);if(!w?.address)throw Error('No active wallet address');if(!ethers.isAddress(w.address))throw Error('Unsigned EVM transactions require an EVM address');const provider=new ethers.JsonRpcProvider(rpcFor(x.network));const nonce=await provider.getTransactionCount(w.address,'pending');const feeData=await provider.getFeeData();let gasLimit=x.asset===x.network.native?21000n:100000n;const tx={chainId:Number(x.network.chainId),nonce,gasLimit,to:x.asset===x.network.native?$('recipient').value.trim():x.network.tokens?.[x.asset]?.address,value:x.asset===x.network.native?amountToRaw(x.amount,18):0n};if(x.asset===x.network.native){tx.data='0x'}else{if(!tx.to)throw Error('No verified contract address for '+x.asset+' on '+x.network.name);tx.data=new ethers.Interface(['function transfer(address to,uint256 amount)']).encodeFunctionData('transfer',[$('recipient').value.trim(),amountToRaw(x.amount,Number(x.network.tokens[x.asset].decimals||6))])}try{const estimated=await provider.estimateGas({from:w.address,to:tx.to,value:tx.value,data:tx.data});gasLimit=(estimated*120n)/100n}catch(e){console.warn('Gas estimation failed; using fallback limit',e)}if(feeData.maxFeePerGas!=null){tx.maxFeePerGas=feeData.maxFeePerGas;tx.maxPriorityFeePerGas=feeData.maxPriorityFeePerGas||0n}else if(feeData.gasPrice!=null){tx.gasPrice=feeData.gasPrice}else{throw Error('Network fee data unavailable')}const unsignedRaw=ethers.Transaction.from(tx).unsignedSerialized;return {version:2,type:'vaultline-unsigned-evm',createdAt:new Date().toISOString(),chainId:tx.chainId,network:x.network.id,networkName:x.network.name,from:w.address,to:tx.to,asset:x.asset,amount:String(x.amount),enteredAmount:String(x.entered),amountMode:x.unit,nonce,gasLimit:String(gasLimit),maxFeePerGas:tx.maxFeePerGas?.toString(),maxPriorityFeePerGas:tx.maxPriorityFeePerGas?.toString(),gasPrice:tx.gasPrice?.toString(),value:tx.value.toString(),data:tx.data,unsignedRaw}}
-async function exportUnsigned(){try{const payload=await buildUnsignedTransaction();closeModal();showView('watch');$('watchUnsignedPayload').value=JSON.stringify(payload,null,2);$('watchUnsignedResult')?.classList.remove('hidden');$('watchUnsignedPayload').scrollIntoView({behavior:'smooth',block:'center'});toast('Unsigned transaction created — copy it or scan the QR in the signing wallet')}catch(e){toast('Could not build unsigned transaction: '+(e.message||'fee or nonce unavailable'))}}
-function transactionExplorerBase(n){return ({ethereum:'https://etherscan.io/tx/',polygon:'https://polygonscan.com/tx/',arbitrum:'https://arbiscan.io/tx/',avalanche:'https://snowtrace.io/tx/',base:'https://basescan.org/tx/',bsc:'https://bscscan.com/tx/'}[n?.id]||'https://etherscan.io/tx/')}
-function transactionExplorerUrl(n,hash){return hash?transactionExplorerBase(n)+encodeURIComponent(hash):'#'}
-function hashAnchor(n,hash,label){const safe=String(hash||'');if(!safe)return '—';return '<a class="hash-link" href="'+transactionExplorerUrl(n,safe)+'" target="_blank" rel="noreferrer">'+(label||safe)+'</a>'}
-async function writeClipboardText(value){const text=String(value??'');try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(text);return true}}catch(e){}try{const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();area.setSelectionRange(0,area.value.length);const ok=document.execCommand('copy');area.remove();return ok}catch(e){return false}}
-async function copyText(id){const el=$(id);if(!el){toast('Nothing to copy');return false}const ok=await writeClipboardText(el.value);toast(ok?'Copied to clipboard':'Copy failed');return ok}
-function applyQrValue(mode,value){const text=String(value||'').trim();if(!text)return false;if(mode==='recipient')$('recipient').value=text;else if(mode==='address')$('watchAddress').value=text;else if(mode==='signed')$('signedPayload').value=text;toast('QR code read successfully');return true}
-function readCamera(mode){const existing=$('qrScanner');if(existing)existing.remove();const wrap=document.createElement('div');wrap.id='qrScanner';wrap.className='modal-backdrop open';wrap.innerHTML='<div class="modal"><div class="modal-head"><div><span class="eyebrow">QR SCANNER</span><h2>Scan with camera</h2></div><button class="close" id="closeQrScanner">×</button></div><p class="sub" id="qrScannerStatus">Point your camera at a QR code.</p><video id="qrVideo" autoplay playsinline style="width:100%;margin-top:14px;background:#101816;min-height:220px"></video><div class="camera-zone"><button class="btn secondary" id="qrImageFallback">Choose QR image</button><button class="btn primary" id="stopQrScanner">Stop camera</button></div><input id="qrImageInput" type="file" accept="image/*" capture="environment" hidden></div>';document.body.appendChild(wrap);const video=$('qrVideo');const status=$('qrScannerStatus');let stream=null,raf=0;const stop=()=>{if(raf)cancelAnimationFrame(raf);stream?.getTracks().forEach(t=>t.stop());wrap.remove()};$('closeQrScanner').onclick=stop;$('stopQrScanner').onclick=stop;$('qrImageFallback').onclick=()=>$('qrImageInput').click();$('qrImageInput').onchange=async()=>{const file=$('qrImageInput').files?.[0];if(!file)return;if(!('BarcodeDetector' in window)){status.textContent='This browser cannot decode the image automatically.';return}try{const detector=new BarcodeDetector({formats:['qr_code']});const codes=await detector.detect(await createImageBitmap(file));if(codes[0]?.rawValue){applyQrValue(mode,codes[0].rawValue);stop()}else status.textContent='No QR code found.'}catch(e){status.textContent='Could not decode this image.'}};if(!navigator.mediaDevices?.getUserMedia||!('BarcodeDetector' in window)){status.textContent='Live scanning unavailable. Use Choose QR image.';return}navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}},audio:false}).then(s=>{stream=s;video.srcObject=s;const detector=new BarcodeDetector({formats:['qr_code']});const scan=async()=>{if(!video.videoWidth){raf=requestAnimationFrame(scan);return}try{const codes=await detector.detect(video);if(codes[0]?.rawValue){applyQrValue(mode,codes[0].rawValue);stop();return}}catch(e){}raf=requestAnimationFrame(scan)};scan()}).catch(e=>{status.textContent='Camera permission was denied or unavailable.'})}
-const SAFE_STORAGE_KEY='vaultline.safe.snapshot.v1';
-function saveSafeSnapshot(){try{const payload={version:1,savedAt:Date.now(),wallets:state.wallets.map(w=>({id:w.id,name:w.name,address:w.address,mode:'watch',created:w.created,balances:w.balances||{}})),active:state.active,prices:state.prices||{},pricesAt:state.pricesAt||0};localStorage.setItem(SAFE_STORAGE_KEY,JSON.stringify(payload))}catch(e){}}
-function restoreSafeSnapshot(){try{const raw=localStorage.getItem(SAFE_STORAGE_KEY);if(!raw)return;const p=JSON.parse(raw);if(!p||!Array.isArray(p.wallets))return;state.wallets=p.wallets.map(w=>({...w,mode:'watch',password:'',phrase:'',passphrase:'',privateKey:''}));state.active=p.active&&state.wallets.some(w=>w.id===p.active)?p.active:(state.wallets[0]?.id||null);state.mode='watch';state.tab='dashboard';state.prices=p.prices||{};state.pricesAt=Number(p.pricesAt||0)}catch(e){}}
+async function copyHash(hash) {
+  const ok = await writeClipboardText(hash);
+  toast(ok ? 'Hash copied' : 'Copy failed');
+}
+function renderHistory() {
+  const rows = $('historyRows'); if (!rows) return;
+  const activeWallet = state.wallets.find(x => x.id === state.active);
+  const bscLink = $('openBscScan');
+  if (bscLink) {
+    if (activeWallet?.address) {
+      bscLink.href = 'https://bscscan.com/address/' + encodeURIComponent(activeWallet.address);
+      bscLink.classList.remove('hidden');
+    } else {
+      bscLink.classList.add('hidden');
+    }
+  }
+  const count = $('historyCount');
+  if (state.historyLoading) {
+    if (count) count.textContent = '…';
+    rows.innerHTML = '<div class="history-loading"><span class="history-spinner"></span><strong>Loading transaction history</strong><small>Checking all configured networks and tokens…</small></div>';
+    return;
+  }
+  const filter = state.historyFilter || 'all';
+  const visible = state.history.filter(t => filter === 'all' || (filter === 'in' ? t.incoming : !t.incoming));
+  if (count) count.textContent = String(visible.length);
+  document.querySelectorAll('[data-history-filter]').forEach(b => b.classList.toggle('active', b.dataset.historyFilter === filter));
+  if (!visible.length) {
+    rows.innerHTML = '<div class="empty">No indexed transactions found for this filter. Refresh to load native transactions and token transfers across all configured networks.</div>';
+    return;
+  }
+  rows.innerHTML = visible.map(t => {
+    const direction = t.incoming ? 'Received' : 'Sent';
+    const address = t.incoming ? t.from : t.to;
+    const date = t.timestamp ? new Date(t.timestamp).toLocaleString() : '—';
+    const amount = (t.incoming ? '+' : '−') + fmt(Number(t.amount) || 0, 6) + ' ' + esc(t.token);
+    const usd = '$' + fmt(Number(t.usdValue) || 0, 2);
+    return `<div class="activity-row history-rich-row">${currencyAvatar(t.token, t.networkName || t.network)}<span class="activity-copy"><strong>${direction} ${esc(t.token)}</strong><small>${esc(t.networkName || t.network)} · ${esc(address || '—')} · block ${esc(t.block || '—')}</small><small class="history-hash">${esc(t.hash || '—')}</small></span><span class="activity-amount ${t.incoming ? 'positive' : ''}">${amount}<small class="history-usd">≈ ${esc(usd)}</small></span><span class="history-status">${esc(t.status || 'pending')}</span><span class="history-date">${esc(date)} <a class="activity-link" href="${esc(t.sourceUrl || '#')}" target="_blank" rel="noreferrer">View</a><button class="hash-copy-btn" type="button" data-copy-hash="${esc(t.hash || '')}" aria-label="Copy hash">Copy</button></span></div>`;
+  }).join('');
+  rows.querySelectorAll('[data-copy-hash]').forEach(b => b.onclick = () => copyHash(b.dataset.copyHash));
+}
+function renderReceive() {
+  const w = state.wallets.find(x => x.id === state.active);
+  const address = w?.address || '';
+  $('receiveAddress').textContent = address || 'Load or create a wallet';
+  $('qrCaption').textContent = address || 'Public address QR';
+  $('receiveQr').innerHTML = '';
+  if (address && window.QRCode) new QRCode($('receiveQr'), { text: address, width: 180, height: 180, colorDark: '#0a0e16', colorLight: '#ffffff' });
+}
+async function downloadQr() {
+  const container = $('receiveQr');
+  const canvas = container.querySelector('canvas');
+  const img = container.querySelector('img');
+  let dataUrl = null;
+  if (canvas) dataUrl = canvas.toDataURL('image/png');
+  else if (img) dataUrl = img.src;
+  else { toast('No QR code to download'); return; }
+  const a = document.createElement('a');
+  a.href = dataUrl; a.download = 'wallet-address-qr.png';
+  document.body.appendChild(a); a.click(); a.remove();
+  toast('QR code downloaded');
+}
 
-function bind(){
+/* ============================================================
+   BROADCAST
+   ============================================================ */
+function signedRawFromInput(value) {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  if (raw.startsWith('0x')) return raw;
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed.signedRaw || parsed.raw || parsed.signedTransaction || '';
+  } catch (e) { return ''; }
+}
+async function broadcastSignedTransaction() {
+  const raw = signedRawFromInput($('signedPayload')?.value);
+  if (!raw) { toast('Paste or scan a signed transaction first'); return; }
+  let tx;
+  try { tx = ethers.Transaction.from(raw); } catch (e) { toast('The signed transaction format is invalid'); return; }
+  const n = NETWORKS.find(x => Number(x.chainId) === Number(tx.chainId));
+  if (!n) { toast('Unsupported signed transaction network'); return; }
+  let symbol = n.native, amount = '0', to = tx.to || '—';
+  const tokenEntry = Object.entries(n.tokens || {}).find(([name, t]) => t?.address && tx.to?.toLowerCase() === t.address.toLowerCase());
+  if (tokenEntry) {
+    symbol = tokenEntry[0];
+    try {
+      const decoded = new ethers.Interface(['function transfer(address to,uint256 amount)']).decodeFunctionData('transfer', tx.data || '0x');
+      to = decoded.to;
+      amount = ethers.formatUnits(decoded.amount, Number(tokenEntry[1].decimals || 6));
+    } catch (e) { amount = '—'; }
+  } else {
+    try { amount = ethers.formatEther(tx.value || 0n); } catch (e) { amount = '—'; }
+  }
+  const gasPrice = tx.maxFeePerGas ?? tx.gasPrice ?? 0n;
+  const feeNative = ethers.formatEther((tx.gasLimit || 0n) * gasPrice);
+  const feePrice = priceForAsset(n.native, n);
+  const amountPrice = priceForAsset(symbol, n);
+  const feeUsd = Number(feeNative) * feePrice;
+  const amountUsd = Number(amount) * amountPrice;
+  openModal('broadcast');
+  $('modalEyebrow').textContent = 'SIGNED TRANSACTION';
+  $('modalTitle').textContent = 'Broadcast signed transaction';
+  $('modalContent').innerHTML = '<div id="broadcastPreview"></div><button class="btn primary full" id="broadcastNow" type="button">Broadcast now</button>';
+  $('broadcastPreview').innerHTML = '<div class="notice">Review the transaction details before broadcasting.</div><div class="review-box broadcast-details"><div class="review-row"><span>Network</span><strong>' + esc(n.name) + '</strong></div><div class="review-row"><span>Sender</span><strong>' + esc(tx.from || '—') + '</strong></div><div class="review-row"><span>Recipient</span><strong>' + esc(to) + '</strong></div><div class="review-row"><span>Quantity</span><strong>' + esc(amount) + ' ' + esc(symbol) + '</strong></div><div class="review-row"><span>Amount in USD</span><strong>' + (amountPrice > 0 ? fmtUsd(amountUsd) : '—') + '</strong></div><div class="review-row"><span>Network fee</span><strong>' + esc(feeNative) + ' ' + esc(n.native) + '</strong></div><div class="review-row"><span>Fee in USD</span><strong>' + (feePrice > 0 ? fmtUsd(feeUsd) : '—') + '</strong></div></div>';
+  $('broadcastNow').onclick = () => broadcastRawTransaction(raw, n);
+}
+async function broadcastRawTransaction(raw, n) {
+  try {
+    const txRaw = signedRawFromInput(raw);
+    if (!txRaw) throw Error('Paste a signed raw transaction first');
+    const tx = ethers.Transaction.from(txRaw);
+    const network = n || NETWORKS.find(x => Number(x.chainId) === Number(tx.chainId));
+    if (!network) throw Error('Unsupported signed transaction network');
+    const provider = providerFor(network);
+    const response = await provider.broadcastTransaction(txRaw);
+    toast('Transaction broadcasted; waiting for confirmation…');
+    const receipt = await Promise.race([
+      response.wait(1),
+      sleep(90000).then(() => null)
+    ]);
+    if (!receipt) {
+      $('modalEyebrow').textContent = 'PENDING';
+      $('modalTitle').textContent = 'Transaction pending';
+      $('modalContent').innerHTML = '<div class="notice">Transaction is still awaiting confirmation. You can close this dialog — the network will continue processing it.</div><div class="review-box"><div class="review-row"><span>Network</span><strong>' + esc(network.name) + '</strong></div><div class="review-row"><span>Hash</span><strong class="hash-value">' + hashAnchor(network, response.hash, response.hash) + '</strong></div></div><button class="btn primary full" type="button" onclick="closeModal()">Close</button>';
+      toast('Transaction pending');
+      return;
+    }
+    if (receipt.status === 0n || receipt.status === 0) throw Error('Transaction was mined but failed');
+    let symbol = network.native, from = tx.from || '—', to = tx.to || '—', amount = '—';
+    const tokenEntry = Object.entries(network.tokens || {}).find(([name, t]) => t?.address && tx.to?.toLowerCase() === t.address.toLowerCase());
+    if (tokenEntry) {
+      symbol = tokenEntry[0];
+      try {
+        const decoded = new ethers.Interface(['function transfer(address to,uint256 amount)']).decodeFunctionData('transfer', tx.data || '0x');
+        to = decoded.to;
+        amount = ethers.formatUnits(decoded.amount, Number(tokenEntry[1].decimals || 6)) + ' ' + symbol;
+      } catch (e) { amount = symbol; }
+    } else {
+      try { amount = ethers.formatEther(tx.value || 0n) + ' ' + symbol; } catch (e) { amount = '—'; }
+    }
+    const date = new Date().toLocaleString();
+    $('modalEyebrow').textContent = 'SUCCESS';
+    $('modalTitle').textContent = 'Transaction sent';
+    $('modalContent').innerHTML = '<div class="notice success-notice">✓ Transaction sent successfully</div><div class="review-box"><div class="review-row"><span>Network</span><strong>' + esc(network.name) + '</strong></div><div class="review-row"><span>Amount</span><strong>' + esc(amount) + '</strong></div><div class="review-row"><span>From</span><strong>' + esc(from) + '</strong></div><div class="review-row"><span>To</span><strong>' + esc(to) + '</strong></div><div class="review-row"><span>Date</span><strong>' + esc(date) + '</strong></div><div class="review-row"><span>Hash</span><strong class="hash-value">' + hashAnchor(network, response.hash, response.hash) + '</strong></div></div><button class="btn primary full" type="button" onclick="closeModal()">Close</button>';
+    toast('Transaction sent successfully');
+  } catch (e) {
+    const msg = String(e?.message || '');
+    if (/user rejected|denied/i.test(msg)) toast('Transaction was rejected');
+    else toast('Broadcast failed: ' + (msg || 'unknown error'));
+  }
+}
+
+/* ============================================================
+   UNSIGNED TX
+   ============================================================ */
+function renderReviewModal() {
+  const n = NETWORKS.find(x => x.id === $('sendNetwork').value) || NETWORKS[0];
+  const asset = $('sendAsset').value === 'native' ? n.native : $('sendAsset').value;
+  const resolved = resolvedSendAmount();
+  const amount = String(resolved.amount);
+  const price = resolved.price;
+  const usdValue = Number(amount) * price;
+  const to = $('recipient').value.trim();
+  const feeNative = state.feeEstimate?.network === n.id ? state.feeEstimate.native : null;
+  const feeUsd = state.feeEstimate?.network === n.id ? state.feeEstimate.usd : null;
+  $('modalEyebrow').textContent = 'UNSIGNED TRANSACTION';
+  $('modalTitle').textContent = 'Export unsigned transaction';
+  $('modalContent').innerHTML = `<div class="review-box"><div class="review-row"><span>Network</span><strong>${esc(n.name)} · chain ${esc(n.chainId)}</strong></div><div class="review-row"><span>Asset / amount</span><strong>${esc(amount)} ${esc(asset)}</strong></div><div class="review-row"><span>Amount (USD)</span><strong>${price > 0 ? fmtUsd(usdValue) : '—'}</strong></div><div class="review-row"><span>Recipient</span><strong>${esc(to)}</strong></div><div class="review-row"><span>Network fee</span><strong>${feeNative != null ? esc(fmt(feeNative, 8)) + ' ' + esc(n.native) : 'Calculating…'}</strong></div><div class="review-row"><span>Fee (USD)</span><strong>${feeUsd != null && feeUsd > 0 ? fmtUsd(feeUsd) : '—'}</strong></div><div class="review-row"><span>Total (USD)</span><strong>${(price > 0 && feeUsd != null) ? fmtUsd(usdValue + feeUsd) : '—'}</strong></div></div><button class="btn primary full" id="exportUnsigned" type="button">Build raw unsigned transaction + QR</button><p class="form-note">The exported JSON contains unsignedRaw, a complete EVM transaction with chainId, nonce, gas, value, and calldata. Transfer it to a separate signing wallet.</p>`;
+  $('exportUnsigned')?.addEventListener('click', exportUnsigned);
+}
+
+// ===== Native balance check helper =====
+function nativeBalanceCheck(network, asset, amount, feeNative) {
+  const w = state.wallets.find(x => x.id === state.active);
+  if (!w) return { ok: false, reason: 'No active wallet' };
+  const balances = w.balances?.[network.id] || {};
+  const nativeBalance = Number(balances[network.native] || 0);
+  if (feeNative == null || !Number.isFinite(feeNative)) {
+    return { ok: false, reason: 'Fee estimate is not ready yet. Please wait a moment and try again.' };
+  }
+  if (asset === network.native) {
+    const needed = Number(amount || 0) + Number(feeNative || 0);
+    if (nativeBalance < needed) {
+      return { ok: false, reason: 'Insufficient ' + network.native + ' balance to cover amount plus network fee. Available: ' + fmt(nativeBalance, 8) + ' ' + network.native + ', required: ' + fmt(needed, 8) + ' ' + network.native + '.' };
+    }
+  } else {
+    if (nativeBalance < Number(feeNative || 0)) {
+      return { ok: false, reason: 'Insufficient ' + network.native + ' balance to cover the network fee. Available: ' + fmt(nativeBalance, 8) + ' ' + network.native + ', required: ' + fmt(feeNative, 8) + ' ' + network.native + '.' };
+    }
+  }
+  return { ok: true };
+}
+
+function validateSend() {
+  const w = state.wallets.find(x => x.id === state.active);
+  if (!w) { toast('Add a watch wallet first'); openModal('watch'); return false; }
+  const n = NETWORKS.find(x => x.id === $('sendNetwork').value) || NETWORKS[0];
+  const asset = $('sendAsset').value;
+  if (asset !== 'native' && !verifiedTokenFor(n, asset)) { toast(asset + ' is not verified on ' + n.name + ' and cannot be sent'); return false; }
+  if (!ethers.isAddress($('recipient').value.trim())) { toast('Enter a valid EVM recipient address'); return false; }
+  if (!(Number($('sendAmount').value) > 0)) { toast('Enter an amount'); return false; }
+  const x = resolvedSendAmount();
+  const feeNative = state.feeEstimate?.network === n.id ? Number(state.feeEstimate.native || 0) : null;
+  const check = nativeBalanceCheck(n, x.asset, x.amount, feeNative);
+  if (!check.ok) { toast(check.reason); return false; }
+  return true;
+}
+async function buildUnsignedTransaction() {
+  const x = resolvedSendAmount();
+  if (x.asset !== x.network.native && !verifiedTokenFor(x.network, x.asset)) throw Error(x.asset + ' is not verified on ' + x.network.name + ' and cannot be sent');
+  const w = state.wallets.find(item => item.id === state.active);
+  if (!w?.address) throw Error('No active wallet address');
+  if (!ethers.isAddress(w.address)) throw Error('Unsigned EVM transactions require an EVM address');
+  const feeNative = state.feeEstimate?.network === x.network.id ? Number(state.feeEstimate.native || 0) : null;
+  const check = nativeBalanceCheck(x.network, x.asset, x.amount, feeNative);
+  if (!check.ok) throw Error(check.reason);
+  const provider = providerFor(x.network);
+  const nonce = await provider.getTransactionCount(w.address, 'pending');
+  const feeData = await provider.getFeeData();
+  let gasLimit = x.asset === x.network.native ? 21000n : 100000n;
+  const tx = {
+    chainId: Number(x.network.chainId),
+    nonce,
+    gasLimit,
+    to: x.asset === x.network.native ? $('recipient').value.trim() : x.network.tokens?.[x.asset]?.address,
+    value: x.asset === x.network.native ? amountToRaw(x.amount, 18) : 0n
+  };
+  if (x.asset === x.network.native) tx.data = '0x';
+  else {
+    if (!tx.to) throw Error('No verified contract address for ' + x.asset + ' on ' + x.network.name);
+    tx.data = new ethers.Interface(['function transfer(address to,uint256 amount)']).encodeFunctionData('transfer', [$('recipient').value.trim(), amountToRaw(x.amount, Number(x.network.tokens[x.asset].decimals || 6))]);
+  }
+  try {
+    const estimated = await provider.estimateGas({ from: w.address, to: tx.to, value: tx.value, data: tx.data });
+    gasLimit = (estimated * 120n) / 100n;
+  } catch (e) { console.warn('Gas estimation failed; using fallback limit', e?.message); }
+  if (feeData.maxFeePerGas != null) { tx.maxFeePerGas = feeData.maxFeePerGas; tx.maxPriorityFeePerGas = feeData.maxPriorityFeePerGas || 0n; }
+  else if (feeData.gasPrice != null) { tx.gasPrice = feeData.gasPrice; }
+  else throw Error('Network fee data unavailable');
+  // Final fee re-check using actual gas
+  const usedGasPrice = tx.maxFeePerGas || tx.gasPrice;
+  const actualFeeNative = Number(ethers.formatEther(usedGasPrice * gasLimit));
+  const finalCheck = nativeBalanceCheck(x.network, x.asset, x.amount, actualFeeNative);
+  if (!finalCheck.ok) throw Error(finalCheck.reason);
+  const unsignedRaw = ethers.Transaction.from(tx).unsignedSerialized;
+  return {
+    version: 2, type: 'vaultline-unsigned-evm', createdAt: new Date().toISOString(),
+    chainId: tx.chainId, network: x.network.id, networkName: x.network.name, from: w.address, to: tx.to,
+    asset: x.asset, amount: String(x.amount), enteredAmount: String(x.entered), amountMode: x.unit,
+    nonce, gasLimit: String(gasLimit),
+    maxFeePerGas: tx.maxFeePerGas?.toString(), maxPriorityFeePerGas: tx.maxPriorityFeePerGas?.toString(),
+    gasPrice: tx.gasPrice?.toString(), value: tx.value.toString(), data: tx.data, unsignedRaw
+  };
+}
+async function exportUnsigned() {
+  try {
+    const payload = await buildUnsignedTransaction();
+    closeModal();
+    showView('watch');
+    $('watchUnsignedPayload').value = JSON.stringify(payload, null, 2);
+    $('watchUnsignedResult')?.classList.remove('hidden');
+    $('watchUnsignedPayload').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    toast('Unsigned transaction created — copy it or scan the QR in the signing wallet');
+  } catch (e) {
+    console.warn('Export failed', e?.message);
+    toast('Could not build unsigned transaction: ' + (e.message || 'fee or nonce unavailable'));
+  }
+}
+function transactionExplorerBase(n) {
+  return ({ethereum:'https://etherscan.io/tx/',polygon:'https://polygonscan.com/tx/',arbitrum:'https://arbiscan.io/tx/',avalanche:'https://snowtrace.io/tx/',base:'https://basescan.org/tx/',bsc:'https://bscscan.com/tx/'}[n?.id] || 'https://etherscan.io/tx/');
+}
+function transactionExplorerUrl(n, hash) { return hash ? transactionExplorerBase(n) + encodeURIComponent(hash) : '#'; }
+function hashAnchor(n, hash, label) {
+  const safe = String(hash || ''); if (!safe) return '—';
+  return '<a class="hash-link" href="' + esc(transactionExplorerUrl(n, safe)) + '" target="_blank" rel="noreferrer">' + esc(label || safe) + '</a>';
+}
+
+/* ============================================================
+   CLIPBOARD + QR CAMERA
+   ============================================================ */
+async function writeClipboardText(value) {
+  const text = String(value ?? '');
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch (e) {}
+  try {
+    const area = document.createElement('textarea');
+    area.value = text; area.style.position = 'fixed'; area.style.opacity = '0';
+    document.body.appendChild(area); area.select(); area.setSelectionRange(0, area.value.length);
+    const ok = document.execCommand('copy'); area.remove(); return ok;
+  } catch (e) { return false; }
+}
+async function copyText(id) {
+  const el = $(id); if (!el) { toast('Nothing to copy'); return false; }
+  const ok = await writeClipboardText(el.value);
+  toast(ok ? 'Copied to clipboard' : 'Copy failed');
+  return ok;
+}
+function applyQrValue(mode, value) {
+  const text = String(value || '').trim(); if (!text) return false;
+  if (mode === 'recipient') $('recipient').value = text;
+  else if (mode === 'address') $('watchAddress').value = text;
+  else if (mode === 'signed') $('signedPayload').value = text;
+  toast('QR code read successfully');
+  return true;
+}
+function readCamera(mode) {
+  const existing = $('qrScanner'); if (existing) existing.remove();
+  const wrap = document.createElement('div');
+  wrap.id = 'qrScanner'; wrap.className = 'modal-backdrop open';
+  wrap.innerHTML = '<div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><span class="eyebrow">QR SCANNER</span><h2>Scan with camera</h2></div><button class="close" id="closeQrScanner" aria-label="Close scanner">×</button></div><p class="sub" id="qrScannerStatus">Point your camera at a QR code.</p><video id="qrVideo" autoplay playsinline style="width:100%;margin-top:14px;background:#101816;min-height:220px"></video><div class="camera-zone"><button class="btn secondary" id="qrImageFallback" type="button">Choose QR image</button><button class="btn primary" id="stopQrScanner" type="button">Stop camera</button></div><input id="qrImageInput" type="file" accept="image/*" capture="environment" hidden></div>';
+  document.body.appendChild(wrap);
+  const video = $('qrVideo'); const status = $('qrScannerStatus');
+  let stream = null, raf = 0;
+  const stop = () => { if (raf) cancelAnimationFrame(raf); stream?.getTracks().forEach(t => t.stop()); wrap.remove(); };
+  $('closeQrScanner').onclick = stop;
+  $('stopQrScanner').onclick = stop;
+  $('qrImageFallback').onclick = () => $('qrImageInput').click();
+  $('qrImageInput').onchange = async () => {
+    const file = $('qrImageInput').files?.[0]; if (!file) return;
+    if (!('BarcodeDetector' in window)) { status.textContent = 'This browser cannot decode the image automatically.'; return; }
+    try {
+      const detector = new BarcodeDetector({ formats: ['qr_code'] });
+      const codes = await detector.detect(await createImageBitmap(file));
+      if (codes[0]?.rawValue) { applyQrValue(mode, codes[0].rawValue); stop(); }
+      else status.textContent = 'No QR code found.';
+    } catch (e) { status.textContent = 'Could not decode this image.'; }
+  };
+  if (!navigator.mediaDevices?.getUserMedia || !('BarcodeDetector' in window)) { status.textContent = 'Live scanning unavailable. Use Choose QR image.'; return; }
+  navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false }).then(s => {
+    stream = s; video.srcObject = s;
+    const detector = new BarcodeDetector({ formats: ['qr_code'] });
+    const scan = async () => {
+      if (!video.videoWidth) { raf = requestAnimationFrame(scan); return; }
+      try {
+        const codes = await detector.detect(video);
+        if (codes[0]?.rawValue) { applyQrValue(mode, codes[0].rawValue); stop(); return; }
+      } catch (e) {}
+      raf = requestAnimationFrame(scan);
+    };
+    scan();
+  }).catch(e => { status.textContent = 'Camera permission was denied or unavailable.'; });
+}
+
+/* ============================================================
+   SAFE STORAGE
+   ============================================================ */
+const SAFE_STORAGE_KEY = 'vaultline.safe.snapshot.v1';
+const saveSafeSnapshot = () => {
+  try {
+    const payload = {
+      version: 1, savedAt: Date.now(),
+      wallets: state.wallets.map(w => ({
+        id: w.id, name: w.name, address: w.address, mode: 'watch',
+        created: w.created, balances: w.balances || {}
+      })),
+      active: state.active, prices: state.prices || {}, pricesAt: state.pricesUpdatedAt || 0
+    };
+    localStorage.setItem(SAFE_STORAGE_KEY, JSON.stringify(payload));
+  } catch (e) { console.warn('Snapshot save failed', e?.message); }
+};
+const saveSafeSnapshotDebounced = debounce(saveSafeSnapshot, 400);
+function restoreSafeSnapshot() {
+  try {
+    const raw = localStorage.getItem(SAFE_STORAGE_KEY); if (!raw) return;
+    const p = JSON.parse(raw); if (!p || !Array.isArray(p.wallets)) return;
+    state.wallets = p.wallets
+      .filter(w => w && typeof w.address === 'string' && ethers.isAddress(w.address))
+      .map(w => ({ ...w, mode: 'watch', password: '', phrase: '', passphrase: '', privateKey: '' }));
+    state.active = (p.active && state.wallets.some(w => w.id === p.active)) ? p.active : (state.wallets[0]?.id || null);
+    state.mode = 'watch'; state.tab = 'dashboard';
+    state.prices = p.prices || {};
+    state.pricesUpdatedAt = Number(p.pricesAt || 0);
+  } catch (e) { console.warn('Snapshot restore failed', e?.message); }
+}
+
+/* ============================================================
+   BIND
+   ============================================================ */
+function bind() {
   populateSelects();
   renderAssets();
   renderHistory();
-  document.querySelectorAll('[data-history-filter]').forEach(b=>b.onclick=()=>{state.historyFilter=b.dataset.historyFilter||'all';renderHistory()});
-  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>showView(b.dataset.tab));
-  $('walletNameBtn')?.addEventListener('click',()=>openModal('wallets'));
-  $('securityAction')?.addEventListener('click',()=>openModal('watch'));
-  $('closeModal').onclick=closeModal;
-  $('modalBackdrop').onclick=e=>{if(e.target.id==='modalBackdrop')closeModal()};
-  $('refreshBalances').onclick=syncWallet;
-  $('sendNetwork').onchange=()=>{refreshAssetOptions();prepareSend()};
-  $('sendAsset').onchange=prepareSend;
-  $('sendAmount').oninput=prepareSend;
-  $('amountUnit').onchange=prepareSend;
-  $('useFullBalance').onclick=useFullBalance;
-  $('reviewSend').onclick=()=>{if(validateSend())openModal('review')};
-  $('copyAddress').onclick=async()=>{const w=state.wallets.find(x=>x.id===state.active);if(!w?.address){toast('No wallet address available');return}const ok=await writeClipboardText(w.address);toast(ok?'Address copied to clipboard':'Copy failed')};
-  $('scanRecipient').onclick=()=>readCamera('recipient');
-  $('refreshHistory').onclick=fetchHistory;
-  $('copyWatchUnsigned').onclick=()=>{if(!$('watchUnsignedPayload').value.trim()){toast('No unsigned payload to copy');return}copyText('watchUnsignedPayload')};
-  $('broadcastSigned')?.addEventListener('click',broadcastSignedTransaction);
+  document.querySelectorAll('[data-history-filter]').forEach(b => b.onclick = () => { state.historyFilter = b.dataset.historyFilter || 'all'; renderHistory(); });
+  $('walletNameBtn')?.addEventListener('click', () => openModal('wallets'));
+  $('closeModal').onclick = closeModal;
+  $('modalBackdrop').onclick = e => { if (e.target.id === 'modalBackdrop') closeModal(); };
+  $('refreshBalances').onclick = syncWallet;
+  $('sendNetwork').onchange = () => { refreshAssetOptions(); prepareSend(); };
+  $('sendAsset').onchange = prepareSend;
+  $('sendAmount').oninput = debounce(prepareSend, 320);
+  $('amountUnit').onchange = prepareSend;
+  $('useFullBalance').onclick = useFullBalance;
+  $('reviewSend').onclick = () => { if (validateSend()) openModal('review'); };
+  $('copyAddress').onclick = async () => {
+    const w = state.wallets.find(x => x.id === state.active);
+    if (!w?.address) { toast('No wallet address available'); return; }
+    const ok = await writeClipboardText(w.address);
+    toast(ok ? 'Address copied to clipboard' : 'Copy failed');
+  };
+  $('downloadQr').onclick = downloadQr;
+  $('scanRecipient').onclick = () => readCamera('recipient');
+  $('refreshHistory').onclick = fetchHistory;
+  $('copyWatchUnsigned').onclick = () => { if (!$('watchUnsignedPayload').value.trim()) { toast('No unsigned payload to copy'); return; } copyText('watchUnsignedPayload'); };
+  $('broadcastSigned')?.addEventListener('click', broadcastSignedTransaction);
   updateWalletChrome();
   fetchPrices();
 }
 restoreSafeSnapshot();
 bind();
-document.documentElement.lang='en';
-document.documentElement.dir='ltr';
-renderModeNav('watch');
+document.documentElement.lang = 'en';
+document.documentElement.dir = 'ltr';
+renderModeNav();
 showView('dashboard');
 </script>
 </body></html>
